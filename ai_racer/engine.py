@@ -37,7 +37,7 @@ class MinimalSubscriber(Node):
         if msg.buttons[0]==1:
             self.prepareEsc()
         #turn
-        turn = msg.axes[3]*-1.0
+        turn = msg.axes[2]*-1.0
         y=turn/(1.0/25.0)
         y=72+y
         kit.servo[0].angle = int(y)

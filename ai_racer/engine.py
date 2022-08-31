@@ -47,7 +47,7 @@ class MinimalSubscriber(Node):
         if the==0.0 or the==-0.0:
             kit.servo[1].angle = 90
         else:
-            kit.servo[1].angle = 90+t
+            kit.servo[1].angle = 90+t-5
 
     
     def prepareEsc(self):

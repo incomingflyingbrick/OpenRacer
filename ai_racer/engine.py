@@ -32,8 +32,10 @@ class MinimalSubscriber(Node):
         self.subscription
 
     def joy_CallBack(self,msg):
-        self.get_logger().info('Button:'+str(msg.buttons))
-        self.get_logger().info('Axes:'+str(msg.axes))
+        # self.get_logger().info('Button:'+str(msg.buttons))
+        # self.get_logger().info('Axes:'+str(msg.axes))
+        print('Button:'+str(msg.buttons))
+        print('Axes:'+str(msg.axes))
         if msg.buttons[0]==1:
             self.prepareEsc()
         #turn
@@ -54,16 +56,16 @@ class MinimalSubscriber(Node):
 
     
     def prepareEsc(self):
-        self.get_logger().info("电调自检验开始")
+        #self.get_logger().info("电调自检验开始")
         for i in range(50):
             kit.servo[1].angle = 90
             sleep(0.1)
-        self.get_logger().info("电调自检验完成")
+        #self.get_logger().info("电调自检验完成")
 
 
     def listener_callback(self, msg):
         pass
-        self.get_logger().info('I heard: "%s"' % msg.data)
+        #self.get_logger().info('I heard: "%s"' % msg.data)
         if msg.data == 'w':
             kit.servo[1].angle = 100
         elif msg.data == 's':

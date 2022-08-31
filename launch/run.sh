@@ -1,3 +1,4 @@
+echo -e 'connect 98:B6:E9:E7:2B:02' | bluetoothctl
 source /opt/ros/galactic/setup.bash
 cd ~/ros2_ws/
 sudo colcon build --packages-select ai_racer engine_node

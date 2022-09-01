@@ -25,7 +25,7 @@ class MinimalSubscriber(Node):
         super().__init__('minimal_subscriber')
         self.isCollecting = True
         self.prepareDataCollection()
-        self.camera = CSICamera(width=328, height=246,capture_fps=5)
+        self.camera = CSICamera(width=328, height=246,capture_fps=10)
         self.camera.running=True
         self.camera.observe(self.cameraCallback,names='value')
         self.turn_value = 0.0

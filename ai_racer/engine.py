@@ -6,6 +6,13 @@ from adafruit_servokit import ServoKit
 from std_msgs.msg import String
 from time import *
 from sensor_msgs.msg import Joy
+import subprocess
+from jetcam.csi_camera import CSICamera
+import traitlets
+import uuid
+
+from PIL import Image
+
 
 kit = ServoKit(channels=16)
 kit.servo[0].angle = 72
@@ -16,12 +23,13 @@ class MinimalSubscriber(Node):
 
     def __init__(self):
         super().__init__('minimal_subscriber')
-        # self.subscription = self.create_subscription(
-        #     String,
-        #     'topic',
-        #     self.listener_callback,
-        #     10)
-        # self.subscription  # prevent unused variable warning
+        self.isCollecting = True
+        self.prepareDataCollection()
+        self.camera = CSICamera(width=328, height=246,capture_fps=5)
+        self.camera.running=True
+        self.camera.observe(self.cameraCallback,names='value')
+        self.turn_value = 0.0
+        self.throttle_value = 0.0
 
         self.subscription = self.create_subscription(
             Joy,
@@ -31,11 +39,24 @@ class MinimalSubscriber(Node):
 
         self.subscription
 
+    def cameraCallback(self,change):
+        #self.get_logger().info(str(change['new']))
+        if self.turn_value!=0.0 or self.throttle_value!=0.0:
+            self.saveData(self.turn_value,self.throttle_value,change['new'])
+
+    def saveData(self,steering,throttle,image_data):
+        if self.isCollecting:
+            file_path = 'snapshots/' + str(uuid.uuid1()) +'_'+str(round(steering,5))+'_'+str(round(throttle,5))+ '_.png'
+            im = Image.fromarray(image_data)
+            im.save(file_path)
+            self.get_logger().info('saved data:'+file_path)
+
     def joy_CallBack(self,msg):
-        # self.get_logger().info('Button:'+str(msg.buttons))
-        # self.get_logger().info('Axes:'+str(msg.axes))
-        print('Button:'+str(msg.buttons))
-        print('Axes:'+str(msg.axes))
+        self.get_logger().info('Button:'+str(msg.buttons))
+        self.get_logger().info('Axes:'+str(msg.axes))
+        self.turn_value = msg.axes[2]
+        self.throttle_value = msg.axes[1]
+
         if msg.buttons[0]==1:
             self.prepareEsc()
         #turn
@@ -56,34 +77,15 @@ class MinimalSubscriber(Node):
 
     
     def prepareEsc(self):
-        #self.get_logger().info("电调自检验开始")
+        self.get_logger().info("电调自检验开始")
         for i in range(50):
             kit.servo[1].angle = 90
             sleep(0.1)
-        #self.get_logger().info("电调自检验完成")
+        self.get_logger().info("电调自检验完成")
 
-
-    def listener_callback(self, msg):
-        pass
-        #self.get_logger().info('I heard: "%s"' % msg.data)
-        if msg.data == 'w':
-            kit.servo[1].angle = 100
-        elif msg.data == 's':
-            kit.servo[1].angle = 69
-        elif msg.data == ' ':
-            kit.servo[1].angle = 90
-
-
-        if msg.data == 'a':
-            kit.servo[0].angle = 57
-        elif msg.data == 'd':
-            kit.servo[0].angle = 87
-        else:
-            kit.servo[0].angle = 72
-
-        
-        if msg.data == 'k':
-            self.prepareEsc()
+    def prepareDataCollection(self):
+        subprocess.call(['rm', '-r','-f', 'snapshots'])
+        subprocess.call(['mkdir', '-p', 'snapshots'])
     
 
 
@@ -99,6 +101,8 @@ def main(args=None):
     # when the garbage collector destroys the node object)
     minimal_subscriber.destroy_node()
     rclpy.shutdown()
+
+
 
 
 if __name__ == '__main__':

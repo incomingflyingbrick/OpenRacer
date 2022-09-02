@@ -23,7 +23,7 @@ class MinimalSubscriber(Node):
 
     def __init__(self):
         super().__init__('minimal_subscriber')
-        self.isCollecting = True
+        self.isCollecting = False
         self.prepareDataCollection()
         self.camera = CSICamera(width=328, height=246,capture_fps=10)
         self.camera.running=True
@@ -61,19 +61,19 @@ class MinimalSubscriber(Node):
             self.prepareEsc()
         #turn
         turn = msg.axes[2]*-1.0
-        y=turn/(1.0/25.0)
+        y=turn/(1.0/40.0)
         y=72+y
         kit.servo[0].angle = int(y)
         #throttle
         the = msg.axes[1]
-        t= the/(1.0/10.0)
+        t= the/(1.0/7.0)
         if the==0.0 or the==-0.0:
             kit.servo[1].angle = 90
         else:
             if the > 0:
                 kit.servo[1].angle = 90+t
             else:
-                kit.servo[1].angle = 90+t-7
+                kit.servo[1].angle = 90+t-8
 
     
     def prepareEsc(self):

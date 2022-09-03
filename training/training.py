@@ -14,7 +14,8 @@ def data_generation():
         lable_list = []
         for item in batch:
             img = Image.open(item)
-            batch_list.append(np.array(img))
+            resized_img = img.resize((int(img.width/3),int(img.height/3)))
+            batch_list.append(np.array(resized_img))
             lable = item.split('_')
             lable_list.append([float(lable[2]),float(lable[3])])# turn and throttle
         
@@ -31,16 +32,20 @@ def data_generation_valid():
         lable_list = []
         for item in batch:
             img = Image.open(item)
-            batch_list.append(np.array(img))
+            resized_img = img.resize((int(img.width/3),int(img.height/3)))
+            batch_list.append(np.array(resized_img))
             lable = item.split('_')
             lable_list.append([float(lable[2]),float(lable[3])])# turn and throttle
         
         yield (np.asarray(batch_list).astype(np.float32),np.asarray(lable_list).astype(np.float32))
 
 
-model  = keras.Sequential([tf.keras.layers.Conv2D(5,(3,3),activation='relu'),tf.keras.layers.MaxPool2D((2,2),strides=2),
+model  = keras.Sequential([tf.keras.layers.Conv2D(20,(3,3),activation='relu'),tf.keras.layers.MaxPool2D((2,2)),
+tf.keras.layers.Conv2D(20,(3,3),activation='relu'),
+tf.keras.layers.MaxPool2D((2,2)),
+tf.keras.layers.Conv2D(20,(3,3),activation='relu'),
 tf.keras.layers.Flatten(),
-tf.keras.layers.Dense(20,activation='relu'),
+tf.keras.layers.Dense(64,activation='relu'),
 tf.keras.layers.Dense(2,activation='linear')])
 model.compile(optimizer='adam',loss='mean_squared_error',metrics=['accuracy'])
 model.fit(x=data_generation(),validation_data=data_generation_valid())

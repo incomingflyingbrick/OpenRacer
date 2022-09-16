@@ -10,12 +10,9 @@ import subprocess
 from jetcam.csi_camera import CSICamera
 import traitlets
 import uuid
-from geometry_msgs.msg import TransformStamped
-from tf2_ros.static_transform_broadcaster import StaticTransformBroadcaster
-from tf2_ros import TransformBroadcaster
+
 from PIL import Image
-from sensor_msgs.msg import JointState
-from rclpy.qos import QoSProfile
+
 
 kit = ServoKit(channels=16)
 kit.servo[0].angle = 72
@@ -26,12 +23,7 @@ class MinimalSubscriber(Node):
 
     def __init__(self):
         super().__init__('minimal_subscriber')
-        # self._tf_publisher = StaticTransformBroadcaster(self)
-        
-        self.isCollecting = False
-        # qos_profile = QoSProfile(depth=10)
-        # self.joint_pub = self.create_publisher(JointState, 'joint_states',qos_profile)
-        # self.broadcaster = TransformBroadcaster(self, qos=qos_profile)
+        self.isCollecting = True
         self.prepareDataCollection()
         self.camera = CSICamera(width=328, height=246,capture_fps=60)
         self.camera.running=True
@@ -60,8 +52,8 @@ class MinimalSubscriber(Node):
             self.get_logger().info('saved data:'+file_path)
 
     def joy_CallBack(self,msg):
-        # self.get_logger().info('Button:'+str(msg.buttons))
-        # self.get_logger().info('Axes:'+str(msg.axes))
+        self.get_logger().info('Button:'+str(msg.buttons))
+        self.get_logger().info('Axes:'+str(msg.axes))
         self.turn_value = msg.axes[2]
         self.throttle_value = msg.axes[1]
 
@@ -83,28 +75,6 @@ class MinimalSubscriber(Node):
             else:
                 kit.servo[1].angle = 90+t-8
 
-        #controll 3D model
-        # x_model = msg.axes[2]
-        # y_model = msg.axes[1]
-        # self.make_transforms(x_model,y_model)
-
-
-    def make_transforms(self, x,y):
-      static_transformStamped = TransformStamped()
-      static_transformStamped.header.stamp = self.get_clock().now().to_msg()
-      static_transformStamped.header.frame_id = 'world'
-      static_transformStamped.child_frame_id = 'base_link'
-      static_transformStamped.transform.translation.x = x
-      static_transformStamped.transform.translation.y = y
-      static_transformStamped.transform.translation.z = 0.0
-      joint_state = JointState()
-      now = self.get_clock().now()
-      joint_state.header.stamp = now.to_msg()
-      joint_state.name = ['base_to_sensor_joint']
-      #self.joint_pub.publish(joint_state)
-      self.broadcaster.sendTransform(static_transformStamped)
-
-      
     
     def prepareEsc(self):
         self.get_logger().info("电调自检验开始")

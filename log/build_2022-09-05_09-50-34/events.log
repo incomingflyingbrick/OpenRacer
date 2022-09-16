@@ -1,0 +1,139 @@
+[0.000000] (-) TimerEvent: {}
+[0.000478] (ai_racer) JobQueued: {'identifier': 'ai_racer', 'dependencies': OrderedDict()}
+[0.005679] (ai_racer) JobStarted: {'identifier': 'ai_racer'}
+[0.099247] (-) TimerEvent: {}
+[0.200125] (-) TimerEvent: {}
+[0.300906] (-) TimerEvent: {}
+[0.401539] (-) TimerEvent: {}
+[0.502144] (-) TimerEvent: {}
+[0.602759] (-) TimerEvent: {}
+[0.703383] (-) TimerEvent: {}
+[0.804007] (-) TimerEvent: {}
+[0.904696] (-) TimerEvent: {}
+[1.005423] (-) TimerEvent: {}
+[1.106008] (-) TimerEvent: {}
+[1.206658] (-) TimerEvent: {}
+[1.307348] (-) TimerEvent: {}
+[1.407965] (-) TimerEvent: {}
+[1.508602] (-) TimerEvent: {}
+[1.609299] (-) TimerEvent: {}
+[1.709917] (-) TimerEvent: {}
+[1.810615] (-) TimerEvent: {}
+[1.911229] (-) TimerEvent: {}
+[2.011898] (-) TimerEvent: {}
+[2.113844] (-) TimerEvent: {}
+[2.215301] (-) TimerEvent: {}
+[2.316101] (-) TimerEvent: {}
+[2.416742] (-) TimerEvent: {}
+[2.517437] (-) TimerEvent: {}
+[2.618036] (-) TimerEvent: {}
+[2.718649] (-) TimerEvent: {}
+[2.819270] (-) TimerEvent: {}
+[2.919852] (-) TimerEvent: {}
+[3.020446] (-) TimerEvent: {}
+[3.121083] (-) TimerEvent: {}
+[3.221635] (-) TimerEvent: {}
+[3.322285] (-) TimerEvent: {}
+[3.422888] (-) TimerEvent: {}
+[3.523588] (-) TimerEvent: {}
+[3.624231] (-) TimerEvent: {}
+[3.724916] (-) TimerEvent: {}
+[3.825542] (-) TimerEvent: {}
+[3.926132] (-) TimerEvent: {}
+[4.026767] (-) TimerEvent: {}
+[4.127404] (-) TimerEvent: {}
+[4.227993] (-) TimerEvent: {}
+[4.328666] (-) TimerEvent: {}
+[4.429455] (-) TimerEvent: {}
+[4.530150] (-) TimerEvent: {}
+[4.630720] (-) TimerEvent: {}
+[4.731446] (-) TimerEvent: {}
+[4.832100] (-) TimerEvent: {}
+[4.932676] (-) TimerEvent: {}
+[5.033351] (-) TimerEvent: {}
+[5.134092] (-) TimerEvent: {}
+[5.234709] (-) TimerEvent: {}
+[5.335359] (-) TimerEvent: {}
+[5.436005] (-) TimerEvent: {}
+[5.536663] (-) TimerEvent: {}
+[5.637320] (-) TimerEvent: {}
+[5.737974] (-) TimerEvent: {}
+[5.838701] (-) TimerEvent: {}
+[5.874092] (ai_racer) Command: {'cmd': ['/usr/bin/python3', 'setup.py', 'egg_info', '--egg-base', 'build/ai_racer', 'build', '--build-base', '/home/jetson/ros2_ws/src/ai_racer/build/ai_racer/build', 'install', '--prefix', '/home/jetson/ros2_ws/src/ai_racer/install/ai_racer', '--record', '/home/jetson/ros2_ws/src/ai_racer/build/ai_racer/install.log', '--single-version-externally-managed'], 'cwd': '/home/jetson/ros2_ws/src/ai_racer', 'env': {'GJS_DEBUG_TOPICS': 'JS ERROR;JS LOG', 'JETSON_BOARD': 'P3449-0000', 'LESSOPEN': '| /usr/bin/lesspipe %s', 'JETSON_TYPE': 'Nano (Developer Kit Version)', 'USER': 'jetson', 'LC_TIME': 'en_CA.UTF-8', 'JETSON_CUDA': '10.2.300', 'SSH_AGENT_PID': '7640', 'XDG_SESSION_TYPE': 'x11', 'SHLVL': '1', 'LD_LIBRARY_PATH': '/usr/local/cuda-10.2/lib64:/usr/lib/aarch64-linux-gnu/gazebo-11/plugins:/opt/ros/galactic/opt/yaml_cpp_vendor/lib:/opt/ros/galactic/opt/rviz_ogre_vendor/lib:/opt/ros/galactic/lib/aarch64-linux-gnu:/opt/ros/galactic/lib', 'HOME': '/home/jetson', 'OLDPWD': '/home/jetson/ros2_ws/src', 'DESKTOP_SESSION': 'ubuntu', 'JETSON_TENSORRT': '8.0.1.6', 'JETSON_L4T': '32.6.1', 'ROS_PYTHON_VERSION': '3', 'GNOME_SHELL_SESSION_MODE': 'ubuntu', 'GTK_MODULES': 'gail:atk-bridge', 'LC_MONETARY': 'en_CA.UTF-8', 'MANAGERPID': '7221', 'JETSON_OPENCV_CUDA': 'YES', 'JETSON_VISIONWORKS': '1.6.0.501', 'DBUS_SESSION_BUS_ADDRESS': 'unix:path=/run/user/1000/bus', 'COLORTERM': 'truecolor', 'JETSON_CHIP_ID': '33', '_colcon_cd_root': '/opt/ros/galactic/', 'MANDATORY_PATH': '/usr/share/gconf/ubuntu.mandatory.path', 'IM_CONFIG_PHASE': '1', 'ROS_DISTRO': 'galactic', 'LOGNAME': 'jetson', 'JETSON_MODULE': 'P3448-0000', 'JETSON_SERIAL_NUMBER': '1423721003769', 'JETSON_CUDNN': '8.2.1.32', 'JOURNAL_STREAM': '8:38624', '_': '/usr/bin/colcon', 'ROS_VERSION': '2', 'JETSON_CODENAME': 'porg', 'XDG_SESSION_CLASS': 'user', 'DEFAULTS_PATH': '/usr/share/gconf/ubuntu.default.path', 'USERNAME': 'jetson', 'TERM': 'xterm-256color', 'GAZEBO_MODEL_PATH': ':/opt/ros/galactic/share/turtlebot3_gazebo/models', 'GNOME_DESKTOP_SESSION_ID': 'this-is-deprecated', 'ROS_LOCALHOST_ONLY': '0', 'WINDOWPATH': '2', 'PATH': '/usr/local/cuda-10.2/bin:/opt/ros/galactic/bin:/home/jetson/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin', 'SESSION_MANAGER': 'local/nano:@/tmp/.ICE-unix/7676,unix/nano:/tmp/.ICE-unix/7676', 'INVOCATION_ID': '817b3ea4beb743398bd4674f7061a645', 'JETSON_OPENCV': '4.6.0', 'PAPERSIZE': 'letter', 'XDG_MENU_PREFIX': 'gnome-', 'LC_ADDRESS': 'en_CA.UTF-8', 'GNOME_TERMINAL_SCREEN': '/org/gnome/Terminal/screen/94831f69_3998_4bbe_bef2_46ced158cd50', 'XDG_RUNTIME_DIR': '/run/user/1000', 'DISPLAY': ':0', 'JETSON_MACHINE': 'NVIDIA Jetson Nano (Developer Kit Version)', 'LANG': 'en_US.UTF-8', 'XDG_CURRENT_DESKTOP': 'ubuntu:GNOME', 'LC_TELEPHONE': 'en_CA.UTF-8', 'JETSON_L4T_REVISION': '6.1', 'XMODIFIERS': '@im=ibus', 'XDG_SESSION_DESKTOP': 'ubuntu', 'XAUTHORITY': '/run/user/1000/gdm/Xauthority', 'LS_COLORS': 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:', 'JETSON_SOC': 'tegra210', 'GNOME_TERMINAL_SERVICE': ':1.100', 'SSH_AUTH_SOCK': '/run/user/1000/keyring/ssh', 'ROS_DOMAIN_ID': '0', 'AMENT_PREFIX_PATH': '/opt/ros/galactic', 'SHELL': '/bin/bash', 'LC_NAME': 'en_CA.UTF-8', 'QT_ACCESSIBILITY': '1', 'GDMSESSION': 'ubuntu', 'LESSCLOSE': '/usr/bin/lesspipe %s %s', 'JETSON_BOARDIDS': '3448', 'LC_MEASUREMENT': 'en_CA.UTF-8', 'GPG_AGENT_INFO': '/run/user/1000/gnupg/S.gpg-agent:0:1', 'GJS_DEBUG_OUTPUT': 'stderr', 'LC_IDENTIFICATION': 'en_CA.UTF-8', 'JETSON_L4T_RELEASE': '32', 'JETSON_VULKAN_INFO': '1.2.141', 'QT_IM_MODULE': 'ibus', 'JETSON_CUDA_ARCH_BIN': '5.3', 'PWD': '/home/jetson/ros2_ws/src/ai_racer/build/ai_racer', 'TURTLEBOT3_MODEL': 'waffle', 'LC_ALL': 'en_US.UTF-8', 'XDG_CONFIG_DIRS': '/etc/xdg/xdg-ubuntu:/etc/xdg', 'XDG_DATA_DIRS': '/usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop', 'JETSON_VPI': 'ii libnvvpi1 1.1.15 arm64 NVIDIA Vision Programming Interface library', 'PYTHONPATH': '/home/jetson/ros2_ws/src/ai_racer/install/ai_racer/lib/python3.8/site-packages:/opt/ros/galactic/lib/python3.8/site-packages', 'LC_NUMERIC': 'en_CA.UTF-8', 'LC_PAPER': 'en_CA.UTF-8', 'COLCON': '1', 'VTE_VERSION': '6003', 'JETSON_JETPACK': '4.6'}, 'shell': False}
+[5.938993] (-) TimerEvent: {}
+[6.039760] (-) TimerEvent: {}
+[6.140410] (-) TimerEvent: {}
+[6.241180] (-) TimerEvent: {}
+[6.341874] (-) TimerEvent: {}
+[6.442520] (-) TimerEvent: {}
+[6.543112] (-) TimerEvent: {}
+[6.643764] (-) TimerEvent: {}
+[6.744393] (-) TimerEvent: {}
+[6.845022] (-) TimerEvent: {}
+[6.945657] (-) TimerEvent: {}
+[7.046304] (-) TimerEvent: {}
+[7.146952] (-) TimerEvent: {}
+[7.247578] (-) TimerEvent: {}
+[7.348260] (-) TimerEvent: {}
+[7.448920] (-) TimerEvent: {}
+[7.549584] (-) TimerEvent: {}
+[7.650205] (-) TimerEvent: {}
+[7.750838] (-) TimerEvent: {}
+[7.851519] (-) TimerEvent: {}
+[7.952067] (-) TimerEvent: {}
+[7.961350] (ai_racer) StdoutLine: {'line': b'running egg_info\n'}
+[7.966083] (ai_racer) StdoutLine: {'line': b'creating build/ai_racer/ai_racer.egg-info\n'}
+[8.046720] (ai_racer) StdoutLine: {'line': b'writing build/ai_racer/ai_racer.egg-info/PKG-INFO\n'}
+[8.047485] (ai_racer) StdoutLine: {'line': b'writing dependency_links to build/ai_racer/ai_racer.egg-info/dependency_links.txt\n'}
+[8.048261] (ai_racer) StdoutLine: {'line': b'writing entry points to build/ai_racer/ai_racer.egg-info/entry_points.txt\n'}
+[8.048715] (ai_racer) StdoutLine: {'line': b'writing requirements to build/ai_racer/ai_racer.egg-info/requires.txt\n'}
+[8.049252] (ai_racer) StdoutLine: {'line': b'writing top-level names to build/ai_racer/ai_racer.egg-info/top_level.txt\n'}
+[8.052316] (-) TimerEvent: {}
+[8.057715] (ai_racer) StdoutLine: {'line': b"writing manifest file 'build/ai_racer/ai_racer.egg-info/SOURCES.txt'\n"}
+[8.152472] (-) TimerEvent: {}
+[8.253258] (-) TimerEvent: {}
+[8.278585] (ai_racer) StdoutLine: {'line': b"reading manifest file 'build/ai_racer/ai_racer.egg-info/SOURCES.txt'\n"}
+[8.282495] (ai_racer) StdoutLine: {'line': b"writing manifest file 'build/ai_racer/ai_racer.egg-info/SOURCES.txt'\n"}
+[8.283737] (ai_racer) StdoutLine: {'line': b'running build\n'}
+[8.284340] (ai_racer) StdoutLine: {'line': b'running build_py\n'}
+[8.285255] (ai_racer) StdoutLine: {'line': b'creating /home/jetson/ros2_ws/src/ai_racer/build/ai_racer/build\n'}
+[8.285754] (ai_racer) StdoutLine: {'line': b'creating /home/jetson/ros2_ws/src/ai_racer/build/ai_racer/build/lib\n'}
+[8.286304] (ai_racer) StdoutLine: {'line': b'creating /home/jetson/ros2_ws/src/ai_racer/build/ai_racer/build/lib/ai_racer\n'}
+[8.286923] (ai_racer) StdoutLine: {'line': b'copying ai_racer/engine.py -> /home/jetson/ros2_ws/src/ai_racer/build/ai_racer/build/lib/ai_racer\n'}
+[8.287324] (ai_racer) StdoutLine: {'line': b'copying ai_racer/controller_node.py -> /home/jetson/ros2_ws/src/ai_racer/build/ai_racer/build/lib/ai_racer\n'}
+[8.288286] (ai_racer) StdoutLine: {'line': b'copying ai_racer/__init__.py -> /home/jetson/ros2_ws/src/ai_racer/build/ai_racer/build/lib/ai_racer\n'}
+[8.289277] (ai_racer) StdoutLine: {'line': b'running install\n'}
+[8.290203] (ai_racer) StderrLine: {'line': b'/usr/local/lib/python3.8/dist-packages/setuptools/command/install.py:34: SetuptoolsDeprecationWarning: setup.py install is deprecated. Use build and pip and other standards-based tools.\n'}
+[8.290676] (ai_racer) StderrLine: {'line': b'  warnings.warn(\n'}
+[8.319057] (ai_racer) StdoutLine: {'line': b'running install_lib\n'}
+[8.353457] (-) TimerEvent: {}
+[8.401587] (ai_racer) StdoutLine: {'line': b'creating /home/jetson/ros2_ws/src/ai_racer/install/ai_racer/lib/python3.8/site-packages/ai_racer\n'}
+[8.402398] (ai_racer) StdoutLine: {'line': b'copying /home/jetson/ros2_ws/src/ai_racer/build/ai_racer/build/lib/ai_racer/engine.py -> /home/jetson/ros2_ws/src/ai_racer/install/ai_racer/lib/python3.8/site-packages/ai_racer\n'}
+[8.403079] (ai_racer) StdoutLine: {'line': b'copying /home/jetson/ros2_ws/src/ai_racer/build/ai_racer/build/lib/ai_racer/controller_node.py -> /home/jetson/ros2_ws/src/ai_racer/install/ai_racer/lib/python3.8/site-packages/ai_racer\n'}
+[8.403464] (ai_racer) StdoutLine: {'line': b'copying /home/jetson/ros2_ws/src/ai_racer/build/ai_racer/build/lib/ai_racer/__init__.py -> /home/jetson/ros2_ws/src/ai_racer/install/ai_racer/lib/python3.8/site-packages/ai_racer\n'}
+[8.404724] (ai_racer) StdoutLine: {'line': b'byte-compiling /home/jetson/ros2_ws/src/ai_racer/install/ai_racer/lib/python3.8/site-packages/ai_racer/engine.py to engine.cpython-38.pyc\n'}
+[8.407816] (ai_racer) StdoutLine: {'line': b'byte-compiling /home/jetson/ros2_ws/src/ai_racer/install/ai_racer/lib/python3.8/site-packages/ai_racer/controller_node.py to controller_node.cpython-38.pyc\n'}
+[8.409698] (ai_racer) StdoutLine: {'line': b'byte-compiling /home/jetson/ros2_ws/src/ai_racer/install/ai_racer/lib/python3.8/site-packages/ai_racer/__init__.py to __init__.cpython-38.pyc\n'}
+[8.410406] (ai_racer) StdoutLine: {'line': b'running install_data\n'}
+[8.453607] (-) TimerEvent: {}
+[8.492092] (ai_racer) StdoutLine: {'line': b'creating /home/jetson/ros2_ws/src/ai_racer/install/ai_racer/share/ament_index\n'}
+[8.492877] (ai_racer) StdoutLine: {'line': b'creating /home/jetson/ros2_ws/src/ai_racer/install/ai_racer/share/ament_index/resource_index\n'}
+[8.493515] (ai_racer) StdoutLine: {'line': b'creating /home/jetson/ros2_ws/src/ai_racer/install/ai_racer/share/ament_index/resource_index/packages\n'}
+[8.493919] (ai_racer) StdoutLine: {'line': b'copying resource/ai_racer -> /home/jetson/ros2_ws/src/ai_racer/install/ai_racer/share/ament_index/resource_index/packages\n'}
+[8.494265] (ai_racer) StdoutLine: {'line': b'copying package.xml -> /home/jetson/ros2_ws/src/ai_racer/install/ai_racer/share/ai_racer\n'}
+[8.494594] (ai_racer) StdoutLine: {'line': b'running install_egg_info\n'}
+[8.553829] (-) TimerEvent: {}
+[8.577602] (ai_racer) StdoutLine: {'line': b'Copying build/ai_racer/ai_racer.egg-info to /home/jetson/ros2_ws/src/ai_racer/install/ai_racer/lib/python3.8/site-packages/ai_racer-0.0.0-py3.8.egg-info\n'}
+[8.581059] (ai_racer) StdoutLine: {'line': b'running install_scripts\n'}
+[8.654034] (-) TimerEvent: {}
+[8.754666] (-) TimerEvent: {}
+[8.855297] (-) TimerEvent: {}
+[8.889217] (ai_racer) StdoutLine: {'line': b'Installing controller_node script to /home/jetson/ros2_ws/src/ai_racer/install/ai_racer/lib/ai_racer\n'}
+[8.890011] (ai_racer) StdoutLine: {'line': b'Installing engine_node script to /home/jetson/ros2_ws/src/ai_racer/install/ai_racer/lib/ai_racer\n'}
+[8.890855] (ai_racer) StdoutLine: {'line': b"writing list of installed files to '/home/jetson/ros2_ws/src/ai_racer/build/ai_racer/install.log'\n"}
+[8.955539] (-) TimerEvent: {}
+[9.056259] (-) TimerEvent: {}
+[9.093804] (ai_racer) CommandEnded: {'returncode': 0}
+[9.156397] (-) TimerEvent: {}
+[9.168279] (ai_racer) JobEnded: {'identifier': 'ai_racer', 'rc': 0}
+[9.171078] (-) EventReactorShutdown: {}

@@ -1,0 +1,43 @@
+[5.872s] Invoking command in '/home/jetson/ros2_ws/src/ai_racer': PYTHONPATH=/home/jetson/ros2_ws/src/ai_racer/install/ai_racer/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base build/ai_racer build --build-base /home/jetson/ros2_ws/src/ai_racer/build/ai_racer/build install --prefix /home/jetson/ros2_ws/src/ai_racer/install/ai_racer --record /home/jetson/ros2_ws/src/ai_racer/build/ai_racer/install.log --single-version-externally-managed
+[7.956s] running egg_info
+[7.960s] creating build/ai_racer/ai_racer.egg-info
+[8.041s] writing build/ai_racer/ai_racer.egg-info/PKG-INFO
+[8.042s] writing dependency_links to build/ai_racer/ai_racer.egg-info/dependency_links.txt
+[8.042s] writing entry points to build/ai_racer/ai_racer.egg-info/entry_points.txt
+[8.043s] writing requirements to build/ai_racer/ai_racer.egg-info/requires.txt
+[8.043s] writing top-level names to build/ai_racer/ai_racer.egg-info/top_level.txt
+[8.052s] writing manifest file 'build/ai_racer/ai_racer.egg-info/SOURCES.txt'
+[8.273s] reading manifest file 'build/ai_racer/ai_racer.egg-info/SOURCES.txt'
+[8.277s] writing manifest file 'build/ai_racer/ai_racer.egg-info/SOURCES.txt'
+[8.278s] running build
+[8.279s] running build_py
+[8.280s] creating /home/jetson/ros2_ws/src/ai_racer/build/ai_racer/build
+[8.280s] creating /home/jetson/ros2_ws/src/ai_racer/build/ai_racer/build/lib
+[8.281s] creating /home/jetson/ros2_ws/src/ai_racer/build/ai_racer/build/lib/ai_racer
+[8.281s] copying ai_racer/engine.py -> /home/jetson/ros2_ws/src/ai_racer/build/ai_racer/build/lib/ai_racer
+[8.281s] copying ai_racer/controller_node.py -> /home/jetson/ros2_ws/src/ai_racer/build/ai_racer/build/lib/ai_racer
+[8.283s] copying ai_racer/__init__.py -> /home/jetson/ros2_ws/src/ai_racer/build/ai_racer/build/lib/ai_racer
+[8.283s] running install
+[8.284s] /usr/local/lib/python3.8/dist-packages/setuptools/command/install.py:34: SetuptoolsDeprecationWarning: setup.py install is deprecated. Use build and pip and other standards-based tools.
+[8.285s]   warnings.warn(
+[8.313s] running install_lib
+[8.396s] creating /home/jetson/ros2_ws/src/ai_racer/install/ai_racer/lib/python3.8/site-packages/ai_racer
+[8.397s] copying /home/jetson/ros2_ws/src/ai_racer/build/ai_racer/build/lib/ai_racer/engine.py -> /home/jetson/ros2_ws/src/ai_racer/install/ai_racer/lib/python3.8/site-packages/ai_racer
+[8.397s] copying /home/jetson/ros2_ws/src/ai_racer/build/ai_racer/build/lib/ai_racer/controller_node.py -> /home/jetson/ros2_ws/src/ai_racer/install/ai_racer/lib/python3.8/site-packages/ai_racer
+[8.398s] copying /home/jetson/ros2_ws/src/ai_racer/build/ai_racer/build/lib/ai_racer/__init__.py -> /home/jetson/ros2_ws/src/ai_racer/install/ai_racer/lib/python3.8/site-packages/ai_racer
+[8.399s] byte-compiling /home/jetson/ros2_ws/src/ai_racer/install/ai_racer/lib/python3.8/site-packages/ai_racer/engine.py to engine.cpython-38.pyc
+[8.402s] byte-compiling /home/jetson/ros2_ws/src/ai_racer/install/ai_racer/lib/python3.8/site-packages/ai_racer/controller_node.py to controller_node.cpython-38.pyc
+[8.404s] byte-compiling /home/jetson/ros2_ws/src/ai_racer/install/ai_racer/lib/python3.8/site-packages/ai_racer/__init__.py to __init__.cpython-38.pyc
+[8.405s] running install_data
+[8.487s] creating /home/jetson/ros2_ws/src/ai_racer/install/ai_racer/share/ament_index
+[8.487s] creating /home/jetson/ros2_ws/src/ai_racer/install/ai_racer/share/ament_index/resource_index
+[8.488s] creating /home/jetson/ros2_ws/src/ai_racer/install/ai_racer/share/ament_index/resource_index/packages
+[8.488s] copying resource/ai_racer -> /home/jetson/ros2_ws/src/ai_racer/install/ai_racer/share/ament_index/resource_index/packages
+[8.488s] copying package.xml -> /home/jetson/ros2_ws/src/ai_racer/install/ai_racer/share/ai_racer
+[8.489s] running install_egg_info
+[8.572s] Copying build/ai_racer/ai_racer.egg-info to /home/jetson/ros2_ws/src/ai_racer/install/ai_racer/lib/python3.8/site-packages/ai_racer-0.0.0-py3.8.egg-info
+[8.575s] running install_scripts
+[8.884s] Installing controller_node script to /home/jetson/ros2_ws/src/ai_racer/install/ai_racer/lib/ai_racer
+[8.884s] Installing engine_node script to /home/jetson/ros2_ws/src/ai_racer/install/ai_racer/lib/ai_racer
+[8.885s] writing list of installed files to '/home/jetson/ros2_ws/src/ai_racer/build/ai_racer/install.log'
+[9.089s] Invoked command in '/home/jetson/ros2_ws/src/ai_racer' returned '0': PYTHONPATH=/home/jetson/ros2_ws/src/ai_racer/install/ai_racer/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base build/ai_racer build --build-base /home/jetson/ros2_ws/src/ai_racer/build/ai_racer/build install --prefix /home/jetson/ros2_ws/src/ai_racer/install/ai_racer --record /home/jetson/ros2_ws/src/ai_racer/build/ai_racer/install.log --single-version-externally-managed

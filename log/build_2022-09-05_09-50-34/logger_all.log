@@ -1,0 +1,89 @@
+[2.043s] DEBUG:colcon:Command line arguments: ['/usr/bin/colcon', 'build']
+[2.044s] DEBUG:colcon:Parsed command line arguments: Namespace(allow_overriding=[], ament_cmake_args=None, base_paths=['.'], build_base='build', catkin_cmake_args=None, catkin_skip_building_tests=False, cmake_args=None, cmake_clean_cache=False, cmake_clean_first=False, cmake_force_configure=False, cmake_target=None, cmake_target_skip_unavailable=False, continue_on_error=False, event_handlers=None, executor='parallel', ignore_user_meta=False, install_base='install', log_base=None, log_level=None, main=<bound method BuildVerb.main of <colcon_core.verb.build.BuildVerb object at 0x7f855b8cd0>>, merge_install=False, metas=['./colcon.meta'], packages_above=None, packages_above_and_dependencies=None, packages_above_depth=None, packages_end=None, packages_ignore=None, packages_ignore_regex=None, packages_select=None, packages_select_build_failed=False, packages_select_by_dep=None, packages_select_regex=None, packages_select_test_failures=False, packages_skip=None, packages_skip_build_finished=False, packages_skip_by_dep=None, packages_skip_regex=None, packages_skip_test_passed=False, packages_skip_up_to=None, packages_start=None, packages_up_to=None, packages_up_to_regex=None, parallel_workers=4, paths=None, symlink_install=False, test_result_base=None, verb_extension=<colcon_core.verb.build.BuildVerb object at 0x7f855b8cd0>, verb_name='build', verb_parser=<colcon_defaults.argument_parser.defaults.DefaultArgumentsDecorator object at 0x7f85471910>)
+[2.301s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) check parameters
+[2.301s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) check parameters
+[2.301s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) check parameters
+[2.301s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) check parameters
+[2.301s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) discover
+[2.302s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) discover
+[2.302s] INFO:colcon.colcon_core.package_discovery:Crawling recursively for packages in '/home/jetson/ros2_ws/src/ai_racer'
+[2.302s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ignore', 'ignore_ament_install']
+[2.303s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore'
+[2.303s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore_ament_install'
+[2.303s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_pkg']
+[2.303s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_pkg'
+[2.304s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_meta']
+[2.304s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_meta'
+[2.304s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ros']
+[2.304s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ros'
+[2.383s] DEBUG:colcon.colcon_core.package_identification:Package '.' with type 'ros.ament_python' and name 'ai_racer'
+[2.383s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) using defaults
+[2.383s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) discover
+[2.384s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) using defaults
+[2.384s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) discover
+[2.384s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) using defaults
+[2.491s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) check parameters
+[2.491s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) discover
+[2.512s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 335 installed packages in /opt/ros/galactic
+[2.522s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) using defaults
+[2.965s] Level 5:colcon.colcon_core.verb:set package 'ai_racer' build argument 'cmake_args' from command line to 'None'
+[2.965s] Level 5:colcon.colcon_core.verb:set package 'ai_racer' build argument 'cmake_target' from command line to 'None'
+[2.965s] Level 5:colcon.colcon_core.verb:set package 'ai_racer' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[2.965s] Level 5:colcon.colcon_core.verb:set package 'ai_racer' build argument 'cmake_clean_cache' from command line to 'False'
+[2.965s] Level 5:colcon.colcon_core.verb:set package 'ai_racer' build argument 'cmake_clean_first' from command line to 'False'
+[2.966s] Level 5:colcon.colcon_core.verb:set package 'ai_racer' build argument 'cmake_force_configure' from command line to 'False'
+[2.966s] Level 5:colcon.colcon_core.verb:set package 'ai_racer' build argument 'ament_cmake_args' from command line to 'None'
+[2.966s] Level 5:colcon.colcon_core.verb:set package 'ai_racer' build argument 'catkin_cmake_args' from command line to 'None'
+[2.966s] Level 5:colcon.colcon_core.verb:set package 'ai_racer' build argument 'catkin_skip_building_tests' from command line to 'False'
+[2.966s] DEBUG:colcon.colcon_core.verb:Building package 'ai_racer' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/jetson/ros2_ws/src/ai_racer/build/ai_racer', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/jetson/ros2_ws/src/ai_racer/install/ai_racer', 'merge_install': False, 'path': '/home/jetson/ros2_ws/src/ai_racer', 'symlink_install': False, 'test_result_base': None}
+[2.971s] INFO:colcon.colcon_core.executor:Executing jobs using 'parallel' executor
+[2.995s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete
+[2.996s] INFO:colcon.colcon_ros.task.ament_python.build:Building ROS package in '/home/jetson/ros2_ws/src/ai_racer' with build type 'ament_python'
+[2.996s] Level 1:colcon.colcon_core.shell:create_environment_hook('ai_racer', 'ament_prefix_path')
+[3.018s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_core.shell.bat': Not used on non-Windows systems
+[3.019s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/jetson/ros2_ws/src/ai_racer/install/ai_racer/share/ai_racer/hook/ament_prefix_path.ps1'
+[3.021s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/jetson/ros2_ws/src/ai_racer/install/ai_racer/share/ai_racer/hook/ament_prefix_path.dsv'
+[3.023s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/jetson/ros2_ws/src/ai_racer/install/ai_racer/share/ai_racer/hook/ament_prefix_path.sh'
+[3.035s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[3.036s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[5.078s] INFO:colcon.colcon_core.task.python.build:Building Python package in '/home/jetson/ros2_ws/src/ai_racer'
+[5.087s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[5.088s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[8.873s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/jetson/ros2_ws/src/ai_racer': PYTHONPATH=/home/jetson/ros2_ws/src/ai_racer/install/ai_racer/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base build/ai_racer build --build-base /home/jetson/ros2_ws/src/ai_racer/build/ai_racer/build install --prefix /home/jetson/ros2_ws/src/ai_racer/install/ai_racer --record /home/jetson/ros2_ws/src/ai_racer/build/ai_racer/install.log --single-version-externally-managed
+[12.090s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/jetson/ros2_ws/src/ai_racer' returned '0': PYTHONPATH=/home/jetson/ros2_ws/src/ai_racer/install/ai_racer/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base build/ai_racer build --build-base /home/jetson/ros2_ws/src/ai_racer/build/ai_racer/build install --prefix /home/jetson/ros2_ws/src/ai_racer/install/ai_racer --record /home/jetson/ros2_ws/src/ai_racer/build/ai_racer/install.log --single-version-externally-managed
+[12.113s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws/src/ai_racer/install/ai_racer' for CMake module files
+[12.115s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws/src/ai_racer/install/ai_racer' for CMake config files
+[12.118s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws/src/ai_racer/install/ai_racer/lib'
+[12.119s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws/src/ai_racer/install/ai_racer/bin'
+[12.119s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws/src/ai_racer/install/ai_racer/lib/pkgconfig/ai_racer.pc'
+[12.120s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws/src/ai_racer/install/ai_racer/lib/python3.8/site-packages'
+[12.121s] Level 1:colcon.colcon_core.shell:create_environment_hook('ai_racer', 'pythonpath')
+[12.130s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/jetson/ros2_ws/src/ai_racer/install/ai_racer/share/ai_racer/hook/pythonpath.ps1'
+[12.132s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/jetson/ros2_ws/src/ai_racer/install/ai_racer/share/ai_racer/hook/pythonpath.dsv'
+[12.133s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/jetson/ros2_ws/src/ai_racer/install/ai_racer/share/ai_racer/hook/pythonpath.sh'
+[12.135s] Level 1:colcon.colcon_core.environment:checking '/home/jetson/ros2_ws/src/ai_racer/install/ai_racer/bin'
+[12.135s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(ai_racer)
+[12.145s] INFO:colcon.colcon_core.shell:Creating package script '/home/jetson/ros2_ws/src/ai_racer/install/ai_racer/share/ai_racer/package.ps1'
+[12.149s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/jetson/ros2_ws/src/ai_racer/install/ai_racer/share/ai_racer/package.dsv'
+[12.152s] INFO:colcon.colcon_core.shell:Creating package script '/home/jetson/ros2_ws/src/ai_racer/install/ai_racer/share/ai_racer/package.sh'
+[12.155s] INFO:colcon.colcon_core.shell:Creating package script '/home/jetson/ros2_ws/src/ai_racer/install/ai_racer/share/ai_racer/package.bash'
+[12.158s] INFO:colcon.colcon_core.shell:Creating package script '/home/jetson/ros2_ws/src/ai_racer/install/ai_racer/share/ai_racer/package.zsh'
+[12.161s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/jetson/ros2_ws/src/ai_racer/install/ai_racer/share/colcon-core/packages/ai_racer)
+[12.162s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:closing loop
+[12.163s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:loop closed
+[12.164s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete finished with '0'
+[12.164s] DEBUG:colcon.colcon_core.event_reactor:joining thread
+[12.192s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.terminal_notifier': Not used on non-Darwin systems
+[12.192s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.win32': Not used on non-Windows systems
+[12.193s] INFO:colcon.colcon_notification.desktop_notification:Sending desktop notification using 'notify2'
+[12.251s] DEBUG:colcon.colcon_core.event_reactor:joined thread
+[12.261s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/jetson/ros2_ws/src/ai_racer/install/local_setup.ps1'
+[12.265s] INFO:colcon.colcon_core.shell:Creating prefix util module '/home/jetson/ros2_ws/src/ai_racer/install/_local_setup_util_ps1.py'
+[12.271s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/jetson/ros2_ws/src/ai_racer/install/setup.ps1'
+[12.278s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/jetson/ros2_ws/src/ai_racer/install/local_setup.sh'
+[12.281s] INFO:colcon.colcon_core.shell:Creating prefix util module '/home/jetson/ros2_ws/src/ai_racer/install/_local_setup_util_sh.py'
+[12.283s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/jetson/ros2_ws/src/ai_racer/install/setup.sh'
+[12.289s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/jetson/ros2_ws/src/ai_racer/install/local_setup.bash'
+[12.291s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/jetson/ros2_ws/src/ai_racer/install/setup.bash'
+[12.298s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/jetson/ros2_ws/src/ai_racer/install/local_setup.zsh'
+[12.300s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/jetson/ros2_ws/src/ai_racer/install/setup.zsh'

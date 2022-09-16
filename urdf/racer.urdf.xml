@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<robot name="origins">
+  <link name="base_link">
+    <visual>
+      <geometry>
+        <box size="1.0 1.0 1.0"/>
+      </geometry>
+      <origin xyz="0 0 0.5"/>
+    </visual>
+  </link>
+
+  <link name="sensor_link">
+    <visual>
+      <geometry>
+        <box size="0.5 0.5 0.5"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 1.25"/>
+    </visual>
+  </link>
+
+  <joint name="base_to_sensor_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="sensor_link"/>
+    <origin xyz="0 .30 0" />
+  </joint>
+
+</robot>

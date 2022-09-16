@@ -1,0 +1,39 @@
+running egg_info
+creating build/ai_racer/ai_racer.egg-info
+writing build/ai_racer/ai_racer.egg-info/PKG-INFO
+writing dependency_links to build/ai_racer/ai_racer.egg-info/dependency_links.txt
+writing entry points to build/ai_racer/ai_racer.egg-info/entry_points.txt
+writing requirements to build/ai_racer/ai_racer.egg-info/requires.txt
+writing top-level names to build/ai_racer/ai_racer.egg-info/top_level.txt
+writing manifest file 'build/ai_racer/ai_racer.egg-info/SOURCES.txt'
+reading manifest file 'build/ai_racer/ai_racer.egg-info/SOURCES.txt'
+writing manifest file 'build/ai_racer/ai_racer.egg-info/SOURCES.txt'
+running build
+running build_py
+creating /home/jetson/ros2_ws/src/ai_racer/build/ai_racer/build
+creating /home/jetson/ros2_ws/src/ai_racer/build/ai_racer/build/lib
+creating /home/jetson/ros2_ws/src/ai_racer/build/ai_racer/build/lib/ai_racer
+copying ai_racer/engine.py -> /home/jetson/ros2_ws/src/ai_racer/build/ai_racer/build/lib/ai_racer
+copying ai_racer/controller_node.py -> /home/jetson/ros2_ws/src/ai_racer/build/ai_racer/build/lib/ai_racer
+copying ai_racer/__init__.py -> /home/jetson/ros2_ws/src/ai_racer/build/ai_racer/build/lib/ai_racer
+running install
+running install_lib
+creating /home/jetson/ros2_ws/src/ai_racer/install/ai_racer/lib/python3.8/site-packages/ai_racer
+copying /home/jetson/ros2_ws/src/ai_racer/build/ai_racer/build/lib/ai_racer/engine.py -> /home/jetson/ros2_ws/src/ai_racer/install/ai_racer/lib/python3.8/site-packages/ai_racer
+copying /home/jetson/ros2_ws/src/ai_racer/build/ai_racer/build/lib/ai_racer/controller_node.py -> /home/jetson/ros2_ws/src/ai_racer/install/ai_racer/lib/python3.8/site-packages/ai_racer
+copying /home/jetson/ros2_ws/src/ai_racer/build/ai_racer/build/lib/ai_racer/__init__.py -> /home/jetson/ros2_ws/src/ai_racer/install/ai_racer/lib/python3.8/site-packages/ai_racer
+byte-compiling /home/jetson/ros2_ws/src/ai_racer/install/ai_racer/lib/python3.8/site-packages/ai_racer/engine.py to engine.cpython-38.pyc
+byte-compiling /home/jetson/ros2_ws/src/ai_racer/install/ai_racer/lib/python3.8/site-packages/ai_racer/controller_node.py to controller_node.cpython-38.pyc
+byte-compiling /home/jetson/ros2_ws/src/ai_racer/install/ai_racer/lib/python3.8/site-packages/ai_racer/__init__.py to __init__.cpython-38.pyc
+running install_data
+creating /home/jetson/ros2_ws/src/ai_racer/install/ai_racer/share/ament_index
+creating /home/jetson/ros2_ws/src/ai_racer/install/ai_racer/share/ament_index/resource_index
+creating /home/jetson/ros2_ws/src/ai_racer/install/ai_racer/share/ament_index/resource_index/packages
+copying resource/ai_racer -> /home/jetson/ros2_ws/src/ai_racer/install/ai_racer/share/ament_index/resource_index/packages
+copying package.xml -> /home/jetson/ros2_ws/src/ai_racer/install/ai_racer/share/ai_racer
+running install_egg_info
+Copying build/ai_racer/ai_racer.egg-info to /home/jetson/ros2_ws/src/ai_racer/install/ai_racer/lib/python3.8/site-packages/ai_racer-0.0.0-py3.8.egg-info
+running install_scripts
+Installing controller_node script to /home/jetson/ros2_ws/src/ai_racer/install/ai_racer/lib/ai_racer
+Installing engine_node script to /home/jetson/ros2_ws/src/ai_racer/install/ai_racer/lib/ai_racer
+writing list of installed files to '/home/jetson/ros2_ws/src/ai_racer/build/ai_racer/install.log'

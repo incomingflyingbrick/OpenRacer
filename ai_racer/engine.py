@@ -46,6 +46,7 @@ class MinimalSubscriber(Node):
             10)
 
         self.subscription
+        self.get_logger().info('Engine Node init success! Ready for joy stick input!')
 
     def cameraCallback(self,change):
         #self.get_logger().info(str(change['new']))

@@ -2,7 +2,8 @@ import rclpy
 from rclpy.node import Node
 import keyboard
 from std_msgs.msg import String
-
+# import cv2
+# import tensorflow_hub as hub
 
 class MinimalPublisher(Node):
 
@@ -54,6 +55,9 @@ class MinimalPublisher(Node):
             self.get_logger().info('k')
             msg.data = 'k'
             self.publisher_.publish(msg)
+
+    def objectTracking(self):
+        pass
         
        
 

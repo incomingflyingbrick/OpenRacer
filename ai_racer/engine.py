@@ -33,9 +33,9 @@ class MinimalSubscriber(Node):
         # self.joint_pub = self.create_publisher(JointState, 'joint_states',qos_profile)
         # self.broadcaster = TransformBroadcaster(self, qos=qos_profile)
         self.prepareDataCollection()
-        self.camera = CSICamera(width=328, height=246,capture_fps=60)
-        self.camera.running=True
-        self.camera.observe(self.cameraCallback,names='value')
+        # self.camera = CSICamera(width=328, height=246,capture_fps=60)
+        # self.camera.running=True
+        # self.camera.observe(self.cameraCallback,names='value')
         self.turn_value = 0.0
         self.throttle_value = 0.0
 
@@ -75,7 +75,7 @@ class MinimalSubscriber(Node):
         kit.servo[0].angle = int(y)
         #throttle
         the = msg.axes[1]
-        t= the/(1.0/7.0)
+        t= the/(1.0/9.0)
         if the==0.0 or the==-0.0:
             kit.servo[1].angle = 90
         else:

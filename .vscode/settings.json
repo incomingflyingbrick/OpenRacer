@@ -18,5 +18,6 @@
         "/home/jetson/ros2_ws/install/joystick_ros2/lib/python3.8/site-packages",
         "/home/jetson/ros2_ws/install/ai_racer/lib/python3.8/site-packages",
         "/opt/ros/galactic/lib/python3.8/site-packages"
-    ]
+    ],
+    "ros.distro": "galactic"
 }

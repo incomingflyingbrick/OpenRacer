@@ -1,13 +1,17 @@
-#from jetcam.csi_camera import CSICamera
+from jetcam.csi_camera import CSICamera
 import tensorflow_hub as hub
 import tensorflow as tf
 import cv2
 import numpy as np
 import traceback
 import logging
+import queue
 
-def cameraCallback(image):
+img_que = queue.Queue()
+
+def cameraCallback(change):
     # self.get_logger().info(str(change['new']))
+    image = change['new']
     try:
         batch = [image]
         data = np.asarray(batch)
@@ -16,7 +20,7 @@ def cameraCallback(image):
         class_tensor = result['detection_classes']
         print('class:')
         print(class_tensor)
-        detected_index = tf.where(tf.equal(1.0,class_tensor[0]))#model lable
+        detected_index = tf.where(tf.equal(1.0,class_tensor[0]))
         score_index = detected_index[0][0]
         score_tensor = result['detection_scores']
         print('score shape:')
@@ -47,8 +51,10 @@ def cameraCallback(image):
     except Exception as e:
         logging.error(traceback.format_exc())
     print("inference done")
-    return cv2.rectangle(image, (int(image.shape[1]/2)-20, int(image.shape[0]/2)-20),
+    #cv2.imshow("Result", image)
+    cv2.rectangle(image, (int(image.shape[1]/2)-20, int(image.shape[0]/2)-20),
                      (int(image.shape[1]/2)+20, int(image.shape[0]/2)+20), (0, 200, 0), 1)
+    img_que.put(image)
 
 
 
@@ -58,27 +64,38 @@ model = hub.load(
     "https://hub.tensorflow.google.cn/tensorflow/ssd_mobilenet_v2/2")
 print('model success load')
 
-frameWidth = 328
-frameHeight = 246
-cap = cv2.VideoCapture(0)
-cap.set(3, frameWidth)
-cap.set(4, frameHeight)
-cap.set(10,150)
+# frameWidth = 328
+# frameHeight = 246
+# cap = cv2.VideoCapture(0)
+# cap.set(3, frameWidth)
+# cap.set(4, frameHeight)
+# cap.set(10,150)
 
-while cap.isOpened():
-    success, img = cap.read()
-    if success:
+# while cap.isOpened():
+#     success, img = cap.read()
+#     if success:
         
-        new_img = cameraCallback(img)
-        cv2.imshow("Result", new_img)
+#         new_img = cameraCallback(img)
+#         cv2.imshow("Result", new_img)
+#         if cv2.waitKey(1) & 0xFF == ord('q'):
+#             break
+
+
+
+camera = CSICamera(width=328, height=246, capture_fps=2)
+camera.running = True
+camera.observe(cameraCallback, names='value')
+
+while True:
+    try:
+        print('running')
+        fuck = img_que.get()
+        print(fuck.shape)
+        cv2.imshow('test_windows',fuck)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
-
-
-
-# camera = CSICamera(width=328, height=246, capture_fps=10)
-# camera.running = True
-# camera.observe(cameraCallback, names='value')
+    except Exception as e:
+        logging.error(traceback.format_exc())
 
 # image = '/Users/yazhoujiang/Downloads/dog4.png'
 # image = cv.imread(image)

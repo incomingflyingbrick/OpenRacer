@@ -14,8 +14,11 @@ from geometry_msgs.msg import TransformStamped
 from tf2_ros.static_transform_broadcaster import StaticTransformBroadcaster
 from tf2_ros import TransformBroadcaster
 from PIL import Image
-from sensor_msgs.msg import JointState
+from sensor_msgs.msg import JointState,Image
 from rclpy.qos import QoSProfile
+import tensorflow_hub as hub
+
+model = hub.load("https://hub.tensorflow.google.cn/tensorflow/ssd_mobilenet_v2/2")
 
 kit = ServoKit(channels=16)
 kit.servo[0].angle = 72
@@ -33,9 +36,9 @@ class MinimalSubscriber(Node):
         # self.joint_pub = self.create_publisher(JointState, 'joint_states',qos_profile)
         # self.broadcaster = TransformBroadcaster(self, qos=qos_profile)
         self.prepareDataCollection()
-        # self.camera = CSICamera(width=328, height=246,capture_fps=60)
-        # self.camera.running=True
-        # self.camera.observe(self.cameraCallback,names='value')
+        self.camera = CSICamera(width=328, height=246,capture_fps=10)
+        self.camera.running=True
+        self.camera.observe(self.cameraCallback,names='value')
         self.turn_value = 0.0
         self.throttle_value = 0.0
 
@@ -50,8 +53,13 @@ class MinimalSubscriber(Node):
 
     def cameraCallback(self,change):
         #self.get_logger().info(str(change['new']))
-        if self.turn_value!=0.0 or self.throttle_value!=0.0:
-            self.saveData(self.turn_value,self.throttle_value,change['new'])
+        self.inference(change['new'])
+        # if self.turn_value!=0.0 or self.throttle_value!=0.0:
+        #     self.saveData(self.turn_value,self.throttle_value,change['new'])
+    
+    def inference(self,image):
+        self.get_logger().info("inference")
+        pass
 
     def saveData(self,steering,throttle,image_data):
         if self.isCollecting:

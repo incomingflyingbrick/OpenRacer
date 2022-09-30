@@ -19,9 +19,9 @@ def cameraCallback(change):
     try:
         batch = [image]
         data = np.asarray(batch)
-        start_time = time.time_ns()
+        start_time = time.time()
         result = model(tf.convert_to_tensor(data))
-        print("inference done"+str((time.time_ns()-start_time)/1000000))
+        print("inference time: "+str((time.time()-start_time)*1000)+'ms')
         box_tensor = result['detection_boxes']
         class_tensor = result['detection_classes']
         # print('class:')

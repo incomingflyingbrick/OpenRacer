@@ -6,18 +6,22 @@ import numpy as np
 import traceback
 import logging
 import queue
+import time
 
 img_que = queue.Queue()
 
 def cameraCallback(change):
     # self.get_logger().info(str(change['new']))
+    
     tolerance = 40
     tolerance_hight = 30
     image = change['new']
     try:
         batch = [image]
         data = np.asarray(batch)
+        start_time = time.time_ns()
         result = model(tf.convert_to_tensor(data))
+        print("inference done"+str((time.time_ns()-start_time)/1000000))
         box_tensor = result['detection_boxes']
         class_tensor = result['detection_classes']
         # print('class:')
@@ -32,10 +36,10 @@ def cameraCallback(change):
             i = box_data[score_index]
             centre_x =  int((int(i[3]*image.shape[1])-int(i[1]*image.shape[1]))/2) +int(i[1]*image.shape[1])
             centre_y =  int((int(i[2]*image.shape[0])-int(i[0]*image.shape[0]))/2) +int(i[0]*image.shape[0])
-            cv2.line(image,(centre_x,centre_y),(int(image.shape[1]/2),int(image.shape[0]/2)),(0, 0,200), 2)
+            # cv2.line(image,(centre_x,centre_y),(int(image.shape[1]/2),int(image.shape[0]/2)),(0, 0,200), 2)
 
-            cv2.rectangle(image, (int(i[1]*image.shape[1]), int(i[0]*image.shape[0])),
-                        (int(i[3]*image.shape[1]), int(i[2]*image.shape[0])), (255, 0, 0), 2)
+            # cv2.rectangle(image, (int(i[1]*image.shape[1]), int(i[0]*image.shape[0])),
+            #             (int(i[3]*image.shape[1]), int(i[2]*image.shape[0])), (255, 0, 0), 2)
             target_centre_x = int(image.shape[1]/2)
             target_centre_y = int(image.shape[0]/2)
             if centre_x - target_centre_x > 0 and abs(centre_x - target_centre_x)>tolerance:
@@ -50,9 +54,9 @@ def cameraCallback(change):
             
     except Exception as e:
         logging.error(traceback.format_exc())
-    print("inference done")
-    cv2.rectangle(image, (int(image.shape[1]/2)-tolerance, int(image.shape[0]/2)-tolerance_hight),
-                     (int(image.shape[1]/2)+tolerance, int(image.shape[0]/2)+tolerance_hight), (0, 200, 0), 2)
+    
+    # cv2.rectangle(image, (int(image.shape[1]/2)-tolerance, int(image.shape[0]/2)-tolerance_hight),
+    #                  (int(image.shape[1]/2)+tolerance, int(image.shape[0]/2)+tolerance_hight), (0, 200, 0), 2)
     #img_que.put(image)
 
 
@@ -81,7 +85,7 @@ print('model success load')
 
 
 
-camera = CSICamera(width=328, height=246, capture_fps=10)
+camera = CSICamera(width=328, height=246, capture_fps=3)
 #camera = CSICamera(width=656, height=492, capture_fps=20)
 camera.running = True
 camera.observe(cameraCallback, names='value')

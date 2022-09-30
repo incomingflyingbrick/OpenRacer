@@ -1,3 +1,6 @@
+from jetcam.csi_camera import CSICamera
+import tensorflow_hub as hub
+import tensorflow as tf
 
 from multiprocessing.spawn import prepare
 import rclpy
@@ -7,7 +10,6 @@ from std_msgs.msg import String
 from time import *
 from sensor_msgs.msg import Joy
 import subprocess
-from jetcam.csi_camera import CSICamera
 import traitlets
 import uuid
 from geometry_msgs.msg import TransformStamped
@@ -17,8 +19,14 @@ from PIL import Image
 from sensor_msgs.msg import JointState,Image
 from rclpy.qos import QoSProfile
 import tensorflow_hub as hub
+import traceback
+import logging
+import numpy as np
 
-model = hub.load("https://hub.tensorflow.google.cn/tensorflow/ssd_mobilenet_v2/2")
+print('model loading')
+model = hub.load(
+    "https://hub.tensorflow.google.cn/tensorflow/ssd_mobilenet_v2/2")
+print('model success load')
 
 kit = ServoKit(channels=16)
 kit.servo[0].angle = 72
@@ -36,7 +44,7 @@ class MinimalSubscriber(Node):
         # self.joint_pub = self.create_publisher(JointState, 'joint_states',qos_profile)
         # self.broadcaster = TransformBroadcaster(self, qos=qos_profile)
         self.prepareDataCollection()
-        self.camera = CSICamera(width=328, height=246,capture_fps=10)
+        self.camera = CSICamera(width=328, height=246,capture_width=328, capture_height=246,capture_fps=3)
         self.camera.running=True
         self.camera.observe(self.cameraCallback,names='value')
         self.turn_value = 0.0
@@ -52,14 +60,55 @@ class MinimalSubscriber(Node):
         self.get_logger().info('Engine Node init success! Ready for joy stick input!')
 
     def cameraCallback(self,change):
+
+
         #self.get_logger().info(str(change['new']))
-        self.inference(change['new'])
+        self.inference(change)
         # if self.turn_value!=0.0 or self.throttle_value!=0.0:
         #     self.saveData(self.turn_value,self.throttle_value,change['new'])
     
-    def inference(self,image):
-        self.get_logger().info("inference")
-        pass
+    def inference(self,change):
+        tolerance = 40
+        tolerance_hight = 30
+        image = change['new']
+        try:
+            batch = [image]
+            data = np.asarray(batch)
+            start_time = time()
+            result = model(tf.convert_to_tensor(data))
+            self.get_logger().info("inference time: "+str((time()-start_time)*1000)+'ms')
+            box_tensor = result['detection_boxes']
+            class_tensor = result['detection_classes']
+            # print('class:')
+            # print(class_tensor)
+            detected_index = tf.where(tf.equal(1.0,class_tensor[0]))
+            score_index = detected_index[0][0]
+            score_tensor = result['detection_scores']
+            # print('score shape:')
+            if score_tensor[0][score_index] >=0.6:
+                #print(draw boxes)
+                box_data = box_tensor[0]
+                i = box_data[score_index]
+                centre_x =  int((int(i[3]*image.shape[1])-int(i[1]*image.shape[1]))/2) +int(i[1]*image.shape[1])
+                centre_y =  int((int(i[2]*image.shape[0])-int(i[0]*image.shape[0]))/2) +int(i[0]*image.shape[0])
+                # cv2.line(image,(centre_x,centre_y),(int(image.shape[1]/2),int(image.shape[0]/2)),(0, 0,200), 2)
+
+                # cv2.rectangle(image, (int(i[1]*image.shape[1]), int(i[0]*image.shape[0])),
+                #             (int(i[3]*image.shape[1]), int(i[2]*image.shape[0])), (255, 0, 0), 2)
+                target_centre_x = int(image.shape[1]/2)
+                target_centre_y = int(image.shape[0]/2)
+                if centre_x - target_centre_x > 0 and abs(centre_x - target_centre_x)>tolerance:
+                    self.get_logger().info('RIGHT==============>')
+                elif centre_x - target_centre_x < 0 and abs(centre_x - target_centre_x)>tolerance:
+                    self.get_logger().info('<==============LEFT')
+                if centre_y - target_centre_y > 0 and abs(centre_y - target_centre_y)>tolerance_hight:
+                    self.get_logger().info('==========REVERSE==========')
+                elif centre_y - target_centre_y < 0 and abs(centre_y - target_centre_y)>tolerance_hight:
+                    self.get_logger().info('========================================FORWARD========================================')
+                
+        except Exception as e:
+            self.get_logger().info(traceback.format_exc())
+            #logging.error()
 
     def saveData(self,steering,throttle,image_data):
         if self.isCollecting:

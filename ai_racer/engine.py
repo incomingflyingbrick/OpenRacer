@@ -15,7 +15,7 @@ import uuid
 from geometry_msgs.msg import TransformStamped
 from tf2_ros.static_transform_broadcaster import StaticTransformBroadcaster
 from tf2_ros import TransformBroadcaster
-from PIL import Image
+import PIL
 from sensor_msgs.msg import JointState,Image
 from rclpy.qos import QoSProfile
 import tensorflow_hub as hub
@@ -23,10 +23,10 @@ import traceback
 import logging
 import numpy as np
 
-print('model loading')
-model = hub.load(
-    "https://hub.tensorflow.google.cn/tensorflow/ssd_mobilenet_v2/2")
-print('model success load')
+# print('model loading')
+# model = hub.load(
+#     "/home/jetson/Downloads/ssd_mobilenet_v2")
+# print('model success load')
 
 kit = ServoKit(channels=16)
 kit.servo[0].angle = 72
@@ -38,13 +38,13 @@ class MinimalSubscriber(Node):
     def __init__(self):
         super().__init__('minimal_subscriber')
         # self._tf_publisher = StaticTransformBroadcaster(self)
-        
-        self.isCollecting = False
+        self.is_race = True
+        self.isCollecting = True
         # qos_profile = QoSProfile(depth=10)
         # self.joint_pub = self.create_publisher(JointState, 'joint_states',qos_profile)
         # self.broadcaster = TransformBroadcaster(self, qos=qos_profile)
         self.prepareDataCollection()
-        self.camera = CSICamera(width=328, height=246,capture_width=328, capture_height=246,capture_fps=3)
+        self.camera = CSICamera(width=328*2, height=246*2,capture_width=328*2, capture_height=246*2,capture_fps=5)
         self.camera.running=True
         self.camera.observe(self.cameraCallback,names='value')
         self.turn_value = 0.0
@@ -61,15 +61,23 @@ class MinimalSubscriber(Node):
 
     def cameraCallback(self,change):
 
+        if self.is_race == True:
+            if self.isCollecting == True:
+                if self.turn_value!=0.0 or self.throttle_value!=0.0:
+                    self.get_logger().info('controller save working. Collecting race data')
+                    self.saveData(self.turn_value,self.throttle_value,change['new'])
+            else:
+                self.race_inference(change)
+        else:
+            self.get_logger().info(str(change['new']))
+            self.inference(change)
 
-        #self.get_logger().info(str(change['new']))
-        self.inference(change)
-        # if self.turn_value!=0.0 or self.throttle_value!=0.0:
-        #     self.saveData(self.turn_value,self.throttle_value,change['new'])
+    def race_inference(self,change):
+        self.get_logger.info('race inference working')
     
     def inference(self,change):
         tolerance = 40
-        tolerance_hight = 30
+        tolerance_hight = 60
         image = change['new']
         try:
             batch = [image]
@@ -81,11 +89,11 @@ class MinimalSubscriber(Node):
             class_tensor = result['detection_classes']
             # print('class:')
             # print(class_tensor)
-            detected_index = tf.where(tf.equal(1.0,class_tensor[0]))
+            detected_index = tf.where(tf.equal(37.0,class_tensor[0]))
             score_index = detected_index[0][0]
             score_tensor = result['detection_scores']
             # print('score shape:')
-            if score_tensor[0][score_index] >=0.6:
+            if score_tensor[0][score_index] >=0.5:
                 #print(draw boxes)
                 box_data = box_tensor[0]
                 i = box_data[score_index]
@@ -99,12 +107,23 @@ class MinimalSubscriber(Node):
                 target_centre_y = int(image.shape[0]/2)
                 if centre_x - target_centre_x > 0 and abs(centre_x - target_centre_x)>tolerance:
                     self.get_logger().info('RIGHT==============>')
+                    kit.servo[0].angle = int(72+10)
                 elif centre_x - target_centre_x < 0 and abs(centre_x - target_centre_x)>tolerance:
                     self.get_logger().info('<==============LEFT')
+                    kit.servo[0].angle = int(72-10)
+                else:
+                    self.get_logger().info('<==============CENTRE===========')
+                    kit.servo[0].angle = int(72)
+                
                 if centre_y - target_centre_y > 0 and abs(centre_y - target_centre_y)>tolerance_hight:
                     self.get_logger().info('==========REVERSE==========')
+                    kit.servo[1].angle = 90-10
                 elif centre_y - target_centre_y < 0 and abs(centre_y - target_centre_y)>tolerance_hight:
                     self.get_logger().info('========================================FORWARD========================================')
+                    kit.servo[1].angle = 96
+                else:
+                    self.get_logger().info('==================STAY=================')
+                    kit.servo[1].angle = 90
                 
         except Exception as e:
             self.get_logger().info(traceback.format_exc())
@@ -113,13 +132,13 @@ class MinimalSubscriber(Node):
     def saveData(self,steering,throttle,image_data):
         if self.isCollecting:
             file_path = 'snapshots/' + str(uuid.uuid1()) +'_'+str(round(steering,5))+'_'+str(round(throttle,5))+ '_.png'
-            im = Image.fromarray(image_data)
+            im = PIL.Image.fromarray(image_data)
             im.save(file_path)
             self.get_logger().info('saved data:'+file_path)
 
     def joy_CallBack(self,msg):
         # self.get_logger().info('Button:'+str(msg.buttons))
-        # self.get_logger().info('Axes:'+str(msg.axes))
+        self.get_logger().info('Axes:'+str(msg.axes))
         self.turn_value = msg.axes[2]
         self.throttle_value = msg.axes[1]
 

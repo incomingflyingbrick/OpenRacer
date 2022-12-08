@@ -14,7 +14,7 @@ def cameraCallback(change):
     # self.get_logger().info(str(change['new']))
     
     tolerance = 40
-    tolerance_hight = 30
+    tolerance_hight = 20
     image = change['new']
     try:
         batch = [image]
@@ -30,16 +30,16 @@ def cameraCallback(change):
         score_index = detected_index[0][0]
         score_tensor = result['detection_scores']
         # print('score shape:')
-        if score_tensor[0][score_index] >=0.6:
+        if score_tensor[0][score_index] >=0.5:
             #print(draw boxes)
             box_data = box_tensor[0]
             i = box_data[score_index]
             centre_x =  int((int(i[3]*image.shape[1])-int(i[1]*image.shape[1]))/2) +int(i[1]*image.shape[1])
             centre_y =  int((int(i[2]*image.shape[0])-int(i[0]*image.shape[0]))/2) +int(i[0]*image.shape[0])
-            # cv2.line(image,(centre_x,centre_y),(int(image.shape[1]/2),int(image.shape[0]/2)),(0, 0,200), 2)
+            cv2.line(image,(centre_x,centre_y),(int(image.shape[1]/2),int(image.shape[0]/2)),(0, 0,200), 2)
 
-            # cv2.rectangle(image, (int(i[1]*image.shape[1]), int(i[0]*image.shape[0])),
-            #             (int(i[3]*image.shape[1]), int(i[2]*image.shape[0])), (255, 0, 0), 2)
+            cv2.rectangle(image, (int(i[1]*image.shape[1]), int(i[0]*image.shape[0])),
+                        (int(i[3]*image.shape[1]), int(i[2]*image.shape[0])), (255, 0, 0), 2)
             target_centre_x = int(image.shape[1]/2)
             target_centre_y = int(image.shape[0]/2)
             if centre_x - target_centre_x > 0 and abs(centre_x - target_centre_x)>tolerance:
@@ -55,16 +55,16 @@ def cameraCallback(change):
     except Exception as e:
         logging.error(traceback.format_exc())
     
-    # cv2.rectangle(image, (int(image.shape[1]/2)-tolerance, int(image.shape[0]/2)-tolerance_hight),
-    #                  (int(image.shape[1]/2)+tolerance, int(image.shape[0]/2)+tolerance_hight), (0, 200, 0), 2)
-    #img_que.put(image)
+    cv2.rectangle(image, (int(image.shape[1]/2)-tolerance, int(image.shape[0]/2)-tolerance_hight),
+                     (int(image.shape[1]/2)+tolerance, int(image.shape[0]/2)+tolerance_hight), (0, 200, 0), 2)
+    img_que.put(image)
 
 
 
 
-print('model loading')
+print('model loading /home/jetson/Downloads/ssd_mobilenet_v2 https://hub.tensorflow.google.cn/tensorflow/ssd_mobilenet_v2/2')
 model = hub.load(
-    "https://hub.tensorflow.google.cn/tensorflow/ssd_mobilenet_v2/2")
+    "/home/jetson/Downloads/converted_model/")
 print('model success load')
 
 # frameWidth = 328
@@ -85,18 +85,18 @@ print('model success load')
 
 
 
-camera = CSICamera(width=328, height=246, capture_fps=3)
-#camera = CSICamera(width=656, height=492, capture_fps=20)
+camera = CSICamera(width=320, height=320,capture_width=320, capture_height=320, capture_fps=10)
+#camera = CSICamera(width=320, height=320, capture_fps=30)
 camera.running = True
 camera.observe(cameraCallback, names='value')
 print('camerta init success')
-# while True:
-#     try:
-#         cv2.imshow('camera_view',img_que.get())
-#         if cv2.waitKey(1) & 0xFF == ord('q'):
-#             break
-#     except Exception as e:
-#         logging.error(traceback.format_exc())
+while True:
+    try:
+        cv2.imshow('camera_view',img_que.get())
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+    except Exception as e:
+        logging.error(traceback.format_exc())
 
 # image = '/Users/yazhoujiang/Downloads/dog4.png'
 # image = cv.imread(image)

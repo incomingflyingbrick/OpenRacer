@@ -32,7 +32,7 @@ def data_generation_valid():
         lable_list = []
         for item in batch:
             img = Image.open(item)
-            resized_img = img.resize((int(img.width/1),int(img.height/1)))
+            resized_img = img.resize((int(img.width/1),int(img.height/1)))# if run into memory shortage, scale image down
             batch_list.append(np.array(resized_img))
             lable = item.split('_')
             lable_list.append([float(lable[2]),float(lable[3])])# turn and throttle

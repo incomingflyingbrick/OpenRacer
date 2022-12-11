@@ -67,7 +67,7 @@ class MinimalSubscriber(Node):
         if self.is_race == True:
             self.get_logger.info("race mode is on")
             self.get_logger().info('race model init start')
-            self.race_model = tf.keras.models.load_model('/home/jetson/Desktop/model/')
+            self.race_model = tf.keras.models.load_model('/home/jetson/Downloads/model/')
             self.get_logger().info('race model init success')
 
     def cameraCallback(self, change):

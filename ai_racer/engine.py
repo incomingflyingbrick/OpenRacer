@@ -56,7 +56,12 @@ class MinimalSubscriber(Node):
         self.subscription
         self.get_logger().info('Engine Node init success! Ready for joy stick input!')
         if self.isCollecting == True:
-            pass
+            if self.is_race==True:# load racing model
+                self.get_logger().info('race model init start')
+                self.race_model = tf.keras.models.load_model('/home/jetson/Desktop/model/')
+                self.get_logger().info('race model init success')
+            else:
+                pass # collect img data for training
         else:
             print('model loading')
             self.model = hub.load("/home/jetson/Downloads/ssd_mobilenet_v2")

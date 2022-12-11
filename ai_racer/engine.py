@@ -57,15 +57,15 @@ class MinimalSubscriber(Node):
         self.subscription
         self.get_logger().info('Engine Node init success! Ready for joy stick input!')
         if self.isCollecting == True:
-            self.get_logger.info("collection mode is on")
+            self.get_logger().info("collection mode is on")
             pass
         if self.is_detection_mode == True:
-            self.get_logger.info("detection mode is on")
+            self.get_logger().info("detection mode is on")
             print('model loading')
             self.model = hub.load("/home/jetson/Downloads/ssd_mobilenet_v2")
             print('model success load')
         if self.is_race == True:
-            self.get_logger.info("race mode is on")
+            self.get_logger().info("race mode is on")
             self.get_logger().info('race model init start')
             self.race_model = tf.keras.models.load_model('/home/jetson/Downloads/model/')
             self.get_logger().info('race model init success')
@@ -83,13 +83,17 @@ class MinimalSubscriber(Node):
             self.race_inference(change)
 
     def race_inference(self, change):
-        self.get_logger.info('race inference called')
+        self.get_logger().info('race inference called')
         if self.is_start_race == True:
-            self.get_logger.info('race inference starting')
+            self.get_logger().info('race inference starting')
             try:
                 result = self.race_model.predict(np.asarray([change['new']]),batch_size=1)
 
-                self.get_logger.info(result)
+                self.get_logger().info(result)
+                turn =result[0][0]*-1.0
+                y = turn/(1.0/40.0)
+                y = 72+y
+                kit.servo[0].angle = int(y)
             except Exception as e:
                 self.get_logger().info(traceback.format_exc())
 
@@ -161,8 +165,8 @@ class MinimalSubscriber(Node):
             self.get_logger().info('saved data:'+file_path)
 
     def joy_CallBack(self, msg):
-        self.get_logger().info('Button:'+str(msg.buttons))
-        self.get_logger().info('Axes:'+str(msg.axes))
+        # self.get_logger().info('Button:'+str(msg.buttons))
+        # self.get_logger().info('Axes:'+str(msg.axes))
         self.turn_value = msg.axes[2]
         self.throttle_value = msg.axes[1]
 

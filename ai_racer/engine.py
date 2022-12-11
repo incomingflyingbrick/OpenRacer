@@ -23,10 +23,7 @@ import traceback
 import logging
 import numpy as np
 
-# print('model loading')
-# model = hub.load(
-#     "/home/jetson/Downloads/ssd_mobilenet_v2")
-# print('model success load')
+
 
 kit = ServoKit(channels=16)
 kit.servo[0].angle = 72
@@ -58,13 +55,19 @@ class MinimalSubscriber(Node):
 
         self.subscription
         self.get_logger().info('Engine Node init success! Ready for joy stick input!')
+        if self.isCollecting == True:
+            pass
+        else:
+            print('model loading')
+            self.model = hub.load("/home/jetson/Downloads/ssd_mobilenet_v2")
+            print('model success load')
 
     def cameraCallback(self,change):
 
         if self.is_race == True:
             if self.isCollecting == True:
                 if self.turn_value!=0.0 or self.throttle_value!=0.0:
-                    self.get_logger().info('controller save working. Collecting race data')
+                    self.get_logger().info('image data ready to save')
                     self.saveData(self.turn_value,self.throttle_value,change['new'])
             else:
                 self.race_inference(change)
@@ -83,7 +86,7 @@ class MinimalSubscriber(Node):
             batch = [image]
             data = np.asarray(batch)
             start_time = time()
-            result = model(tf.convert_to_tensor(data))
+            result = self.model(tf.convert_to_tensor(data))
             self.get_logger().info("inference time: "+str((time()-start_time)*1000)+'ms')
             box_tensor = result['detection_boxes']
             class_tensor = result['detection_classes']
@@ -184,11 +187,11 @@ class MinimalSubscriber(Node):
       
     
     def prepareEsc(self):
-        self.get_logger().info("电调自检验开始")
+        self.get_logger().info("ESC cal start")
         for i in range(50):
             kit.servo[1].angle = 90
             sleep(0.1)
-        self.get_logger().info("电调自检验完成")
+        self.get_logger().info("ESC cal end")
 
     def prepareDataCollection(self):
         subprocess.call(['rm', '-r','-f', 'snapshots'])
@@ -203,9 +206,6 @@ def main(args=None):
 
     rclpy.spin(minimal_subscriber)
 
-    # Destroy the node explicitly
-    # (optional - otherwise it will be done automatically
-    # when the garbage collector destroys the node object)
     minimal_subscriber.destroy_node()
     rclpy.shutdown()
 

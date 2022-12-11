@@ -41,7 +41,7 @@ class MinimalSubscriber(Node):
         # self.joint_pub = self.create_publisher(JointState, 'joint_states',qos_profile)
         # self.broadcaster = TransformBroadcaster(self, qos=qos_profile)
         self.prepareDataCollection()
-        self.camera = CSICamera(width=328*2, height=246*2,capture_width=328*2, capture_height=246*2,capture_fps=5)
+        self.camera = CSICamera(width=328, height=246,capture_width=328, capture_height=246,capture_fps=30)
         self.camera.running=True
         self.camera.observe(self.cameraCallback,names='value')
         self.turn_value = 0.0

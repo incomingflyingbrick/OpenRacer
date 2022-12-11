@@ -67,7 +67,7 @@ class MinimalSubscriber(Node):
         if self.is_race == True:
             self.get_logger.info("race mode is on")
             self.get_logger().info('race model init start')
-            #self.race_model = tf.keras.models.load_model('/home/jetson/Desktop/model/')
+            self.race_model = tf.keras.models.load_model('/home/jetson/Desktop/model/')
             self.get_logger().info('race model init success')
 
     def cameraCallback(self, change):
@@ -83,10 +83,16 @@ class MinimalSubscriber(Node):
             self.race_inference(change)
 
     def race_inference(self, change):
-        self.get_logger.info('entering inference working')
+        self.get_logger.info('race inference called')
         if self.is_start_race == True:
             self.get_logger.info('race inference starting')
-            
+            try:
+                result = self.race_model.predict(np.asarray([change['new']]),batch_size=1)
+
+                self.get_logger.info(result)
+            except Exception as e:
+                self.get_logger().info(traceback.format_exc())
+
 
     def inference(self, change):
         tolerance = 40
@@ -164,6 +170,8 @@ class MinimalSubscriber(Node):
             self.prepareEsc()
         if msg.buttons[3] == 1:
             self.is_start_race = True
+        if msg.buttons[2] == 1:
+            self.is_start_race = False
         # turn
         turn = msg.axes[2]*-1.0
         y = turn/(1.0/40.0)

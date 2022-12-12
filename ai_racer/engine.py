@@ -88,7 +88,7 @@ class MinimalSubscriber(Node):
             #self.get_logger().info('race inference starting')
             try:
                 result = self.race_model.predict(np.asarray([change['new']]),batch_size=1)
-                self.get_logger().info(str(result[0][0]))
+                self.get_logger().info("Turn: "+str(result[0][0])+" Throttle: "+str(result[0][1]))
                 turn =result[0][0]*-1.0
                 y = turn/(1.0/40.0)
                 y = 72+y

@@ -55,41 +55,40 @@ class MinimalSubscriber(Node):
             10)
 
         self.subscription
-        self.get_logger().info('Engine Node init success! Ready for joy stick input!')
+        self.get_logger().info('Engine Node: start inference engine')
         if self.isCollecting == True:
-            self.get_logger().info("collection mode is on")
-            pass
+            self.get_logger().info("COLLECTION mode is on")
         if self.is_detection_mode == True:
-            self.get_logger().info("detection mode is on")
-            print('model loading')
+            self.get_logger().info("DETECTION mode is on")
+            self.get_logger().info('model loading......')
             self.model = hub.load("/home/jetson/Downloads/ssd_mobilenet_v2")
-            print('model success load')
+            self.get_logger().info('model success load!')
         if self.is_race == True:
-            self.get_logger().info("race mode is on")
-            self.get_logger().info('race model init start')
+            self.get_logger().info("RACE mode is on")
+            self.get_logger().info('model loading......')
             self.race_model = tf.keras.models.load_model('/home/jetson/Downloads/model/')
-            self.get_logger().info('race model init success')
+            self.get_logger().info('model success load!')
+        self.get_logger().info('Engine Node: init sequence end')
 
     def cameraCallback(self, change):
         if self.isCollecting == True:
             if self.turn_value != 0.0 or self.throttle_value != 0.0:
-                self.get_logger().info('image data ready to save')
+                #self.get_logger().info('Image data ready to save')
                 self.saveData(self.turn_value,
                               self.throttle_value, change['new'])
         if self.is_detection_mode == True:
-            self.get_logger().info(str(change['new']))
+            #self.get_logger().info(str(change['new']))
             self.inference(change)
         if self.is_race == True:
             self.race_inference(change)
 
     def race_inference(self, change):
-        self.get_logger().info('race inference called')
+        #self.get_logger().info('race inference called')
         if self.is_start_race == True:
-            self.get_logger().info('race inference starting')
+            #self.get_logger().info('race inference starting')
             try:
                 result = self.race_model.predict(np.asarray([change['new']]),batch_size=1)
-
-                self.get_logger().info(result)
+                self.get_logger().info(str(result[0][0]))
                 turn =result[0][0]*-1.0
                 y = turn/(1.0/40.0)
                 y = 72+y
@@ -166,7 +165,7 @@ class MinimalSubscriber(Node):
 
     def joy_CallBack(self, msg):
         # self.get_logger().info('Button:'+str(msg.buttons))
-        # self.get_logger().info('Axes:'+str(msg.axes))
+        self.get_logger().info('Axes:'+str(msg.axes))
         self.turn_value = msg.axes[2]
         self.throttle_value = msg.axes[1]
 

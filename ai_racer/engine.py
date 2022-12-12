@@ -165,7 +165,7 @@ class MinimalSubscriber(Node):
 
     def joy_CallBack(self, msg):
         # self.get_logger().info('Button:'+str(msg.buttons))
-        self.get_logger().info('Axes:'+str(msg.axes))
+        #self.get_logger().info('Axes:'+str(msg.axes))
         self.turn_value = msg.axes[2]
         self.throttle_value = msg.axes[1]
 

@@ -171,9 +171,9 @@ class MinimalSubscriber(Node):
 
         if msg.buttons[0] == 1:
             self.prepareEsc()
-        if msg.buttons[3] == 1:
+        if msg.buttons[3] == 1 and self.is_race == True:
             self.is_start_race = True
-        if msg.buttons[2] == 1:
+        if msg.buttons[2] == 1 and self.is_race == True:
             self.is_start_race = False
         # turn
         turn = msg.axes[2]*-1.0

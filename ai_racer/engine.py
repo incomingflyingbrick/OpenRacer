@@ -164,17 +164,19 @@ class MinimalSubscriber(Node):
             self.get_logger().info('saved data:'+file_path)
 
     def joy_CallBack(self, msg):
-        # self.get_logger().info('Button:'+str(msg.buttons))
+        #self.get_logger().info('Button:'+str(msg.buttons))
         #self.get_logger().info('Axes:'+str(msg.axes))
         self.turn_value = msg.axes[2]
         self.throttle_value = msg.axes[1]
 
         if msg.buttons[0] == 1:
             self.prepareEsc()
-        if msg.buttons[3] == 1 and self.is_race == True:
+        if msg.buttons[3] == 1:
             self.is_start_race = True
-        if msg.buttons[2] == 1 and self.is_race == True:
+            self.get_logger().info('X pressed')
+        if msg.buttons[2] == 1:
             self.is_start_race = False
+            self.get_logger().info('Y pressed')
         # turn
         turn = msg.axes[2]*-1.0
         y = turn/(1.0/40.0)

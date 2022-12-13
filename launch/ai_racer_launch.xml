@@ -1,4 +1,5 @@
 <launch>
   <node pkg="joy" exec="joy_node"/>
   <node pkg="ai_racer" exec="engine_node" />
-</launch>
+  <!-- <node pkg="ai_racer" exec="img_node" /> -->
+ </launch>

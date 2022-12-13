@@ -20,8 +20,10 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
+            'img_node = ai_racer.img_node:main',
             'controller_node = ai_racer.controller_node:main',
             'engine_node = ai_racer.engine:main'
+            
         ],
     },
 )

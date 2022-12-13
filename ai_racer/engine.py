@@ -10,7 +10,6 @@ from std_msgs.msg import String
 from time import *
 from sensor_msgs.msg import Joy
 import subprocess
-import traitlets
 import uuid
 from geometry_msgs.msg import TransformStamped
 from tf2_ros.static_transform_broadcaster import StaticTransformBroadcaster
@@ -20,18 +19,20 @@ from sensor_msgs.msg import JointState, Image
 from rclpy.qos import QoSProfile
 import tensorflow_hub as hub
 import traceback
-import logging
 import numpy as np
-
+import cv2
+from std_msgs.msg import Int32MultiArray
 
 kit = ServoKit(channels=16)
 kit.servo[0].angle = 72
+
+cv2.startWindowThread()
 
 
 class MinimalSubscriber(Node):
 
     def __init__(self):
-        super().__init__('minimal_subscriber')
+        super().__init__('engine_node')
         # self._tf_publisher = StaticTransformBroadcaster(self)
         self.is_race = True
         self.isCollecting = False
@@ -41,13 +42,17 @@ class MinimalSubscriber(Node):
         # self.joint_pub = self.create_publisher(JointState, 'joint_states',qos_profile)
         # self.broadcaster = TransformBroadcaster(self, qos=qos_profile)
         self.prepareDataCollection()
+        self.steer = 0.0
+        self.throttle = 0.0
+        self.frame_counter = 0
         self.camera = CSICamera(
             width=328, height=246, capture_width=328, capture_height=246, capture_fps=30)
         self.camera.running = True
         self.camera.observe(self.cameraCallback, names='value')
         self.turn_value = 0.0
         self.throttle_value = 0.0
-
+        self.publisher_ = self.create_publisher(
+            Int32MultiArray, 'camera_image_topic', 10)
         self.subscription = self.create_subscription(
             Joy,
             'joy',
@@ -66,36 +71,58 @@ class MinimalSubscriber(Node):
         if self.is_race == True:
             self.get_logger().info("RACE mode is on")
             self.get_logger().info('model loading......')
-            self.race_model = tf.keras.models.load_model('/home/jetson/Downloads/model/')
+            self.race_model = tf.keras.models.load_model(
+                '/home/jetson/Downloads/model/')
             self.get_logger().info('model success load!')
         self.get_logger().info('Engine Node: init sequence end')
 
     def cameraCallback(self, change):
+        self.frame_counter+=1
         if self.isCollecting == True:
             if self.turn_value != 0.0 or self.throttle_value != 0.0:
                 #self.get_logger().info('Image data ready to save')
                 self.saveData(self.turn_value,
                               self.throttle_value, change['new'])
         if self.is_detection_mode == True:
-            #self.get_logger().info(str(change['new']))
+            # self.get_logger().info(str(change['new']))
             self.inference(change)
         if self.is_race == True:
             self.race_inference(change)
+        cv2.namedWindow("camera_view")
+        image = change['new']
+        
+        cv2.putText(img=image, text='Steer: '+str(self.steer), org=(
+            16, 200), fontFace=cv2.FONT_HERSHEY_TRIPLEX, fontScale=0.45, color=(255, 255, 255), thickness=1)
+        cv2.putText(img=image, text='Throttle: '+str(self.throttle), org=(
+            16, 220), fontFace=cv2.FONT_HERSHEY_TRIPLEX, fontScale=0.45, color=(255, 255, 255), thickness=1)
+        cv2.imshow('camera_view', image)
 
     def race_inference(self, change):
         #self.get_logger().info('race inference called')
-        if self.is_start_race == True:
+        if self.is_start_race == True and self.frame_counter>=15:
             #self.get_logger().info('race inference starting')
+            
             try:
-                result = self.race_model.predict(np.asarray([change['new']]),batch_size=1)
-                self.get_logger().info("Turn: "+str(result[0][0])+" Throttle: "+str(result[0][1]))
-                turn =result[0][0]*-1.0
+                result = self.race_model.predict(
+                    np.asarray([change['new']]), batch_size=1)
+                self.steer = result[0][0]
+                self.throttle = result[0][1]
+                self.get_logger().info(
+                    "Turn: "+str(result[0][0])+" Throttle: "+str(result[0][1]))
+                turn = result[0][0]*-1.0
                 y = turn/(1.0/40.0)
                 y = 72+y
                 kit.servo[0].angle = int(y)
+                cv2.namedWindow("camera_view")
+                image = change['new']
+                cv2.putText(img=image, text='Steer: '+str(self.steer), org=(
+                    16, 200), fontFace=cv2.FONT_HERSHEY_TRIPLEX, fontScale=0.45, color=(255, 255, 255), thickness=1)
+                cv2.putText(img=image, text='Throttle: '+str(self.throttle), org=(
+                    16, 220), fontFace=cv2.FONT_HERSHEY_TRIPLEX, fontScale=0.45, color=(255, 255, 255), thickness=1)
+                cv2.imshow('camera_view', image)
             except Exception as e:
                 self.get_logger().info(traceback.format_exc())
-
+            self.frame_counter = 0
 
     def inference(self, change):
         tolerance = 40
@@ -164,8 +191,8 @@ class MinimalSubscriber(Node):
             self.get_logger().info('saved data:'+file_path)
 
     def joy_CallBack(self, msg):
-        #self.get_logger().info('Button:'+str(msg.buttons))
-        #self.get_logger().info('Axes:'+str(msg.axes))
+        # self.get_logger().info('Button:'+str(msg.buttons))
+        # self.get_logger().info('Axes:'+str(msg.axes))
         self.turn_value = msg.axes[2]
         self.throttle_value = msg.axes[1]
 

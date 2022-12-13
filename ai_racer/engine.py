@@ -34,9 +34,9 @@ class MinimalSubscriber(Node):
     def __init__(self):
         super().__init__('engine_node')
         # self._tf_publisher = StaticTransformBroadcaster(self)
-        self.is_race = True
+        self.is_race = False
         self.isCollecting = False
-        self.is_detection_mode = False
+        self.is_detection_mode = True
         self.is_start_race = False
         # qos_profile = QoSProfile(depth=10)
         # self.joint_pub = self.create_publisher(JointState, 'joint_states',qos_profile)
@@ -45,14 +45,8 @@ class MinimalSubscriber(Node):
         self.steer = 0.0
         self.throttle = 0.0
         self.frame_counter = 0
-        self.camera = CSICamera(
-            width=328, height=246, capture_width=328, capture_height=246, capture_fps=30)
-        self.camera.running = True
-        self.camera.observe(self.cameraCallback, names='value')
         self.turn_value = 0.0
         self.throttle_value = 0.0
-        self.publisher_ = self.create_publisher(
-            Int32MultiArray, 'camera_image_topic', 10)
         self.subscription = self.create_subscription(
             Joy,
             'joy',
@@ -75,9 +69,14 @@ class MinimalSubscriber(Node):
                 '/home/jetson/Downloads/model/')
             self.get_logger().info('model success load!')
         self.get_logger().info('Engine Node: init sequence end')
+        self.camera = CSICamera(
+            width=328, height=246, capture_width=328, capture_height=246, capture_fps=30)
+        self.camera.running = True
+        self.camera.observe(self.cameraCallback, names='value')
 
     def cameraCallback(self, change):
         self.frame_counter+=1
+        image = change['new']
         if self.isCollecting == True:
             if self.turn_value != 0.0 or self.throttle_value != 0.0:
                 #self.get_logger().info('Image data ready to save')
@@ -87,14 +86,12 @@ class MinimalSubscriber(Node):
             # self.get_logger().info(str(change['new']))
             self.inference(change)
         if self.is_race == True:
+            cv2.putText(img=image, text='Steer: '+str(self.steer), org=(
+            16, 200), fontFace=cv2.FONT_HERSHEY_TRIPLEX, fontScale=0.45, color=(255, 255, 255), thickness=1)
+            cv2.putText(img=image, text='Throttle: '+str(self.throttle), org=(
+            16, 220), fontFace=cv2.FONT_HERSHEY_TRIPLEX, fontScale=0.45, color=(255, 255, 255), thickness=1)
             self.race_inference(change)
         cv2.namedWindow("camera_view")
-        image = change['new']
-        
-        cv2.putText(img=image, text='Steer: '+str(self.steer), org=(
-            16, 200), fontFace=cv2.FONT_HERSHEY_TRIPLEX, fontScale=0.45, color=(255, 255, 255), thickness=1)
-        cv2.putText(img=image, text='Throttle: '+str(self.throttle), org=(
-            16, 220), fontFace=cv2.FONT_HERSHEY_TRIPLEX, fontScale=0.45, color=(255, 255, 255), thickness=1)
         cv2.imshow('camera_view', image)
 
     def race_inference(self, change):
@@ -125,6 +122,9 @@ class MinimalSubscriber(Node):
             self.frame_counter = 0
 
     def inference(self, change):
+        if self.frame_counter<8:
+            return
+
         tolerance = 40
         tolerance_hight = 60
         image = change['new']
@@ -138,7 +138,7 @@ class MinimalSubscriber(Node):
             class_tensor = result['detection_classes']
             # print('class:')
             # print(class_tensor)
-            detected_index = tf.where(tf.equal(37.0, class_tensor[0]))
+            detected_index = tf.where(tf.equal(1.0, class_tensor[0]))
             score_index = detected_index[0][0]
             score_tensor = result['detection_scores']
             # print('score shape:')
@@ -150,10 +150,12 @@ class MinimalSubscriber(Node):
                     (int(i[3]*image.shape[1])-int(i[1]*image.shape[1]))/2) + int(i[1]*image.shape[1])
                 centre_y = int(
                     (int(i[2]*image.shape[0])-int(i[0]*image.shape[0]))/2) + int(i[0]*image.shape[0])
-                # cv2.line(image,(centre_x,centre_y),(int(image.shape[1]/2),int(image.shape[0]/2)),(0, 0,200), 2)
+                cv2.line(image,(centre_x,centre_y),(int(image.shape[1]/2),int(image.shape[0]/2)),(0, 0,200), 2)
 
-                # cv2.rectangle(image, (int(i[1]*image.shape[1]), int(i[0]*image.shape[0])),
-                #             (int(i[3]*image.shape[1]), int(i[2]*image.shape[0])), (255, 0, 0), 2)
+                cv2.rectangle(image, (int(i[1]*image.shape[1]), int(i[0]*image.shape[0])),
+                            (int(i[3]*image.shape[1]), int(i[2]*image.shape[0])), (255, 0, 0), 2)
+                cv2.namedWindow("camera_view")
+                cv2.imshow('camera_view', image)
                 target_centre_x = int(image.shape[1]/2)
                 target_centre_y = int(image.shape[0]/2)
                 if centre_x - target_centre_x > 0 and abs(centre_x - target_centre_x) > tolerance:
@@ -180,6 +182,7 @@ class MinimalSubscriber(Node):
         except Exception as e:
             self.get_logger().info(traceback.format_exc())
             # logging.error()
+        self.frame_counter = 0
 
     def saveData(self, steering, throttle, image_data):
         if self.isCollecting:

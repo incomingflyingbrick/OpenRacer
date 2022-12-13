@@ -105,11 +105,24 @@ class MinimalSubscriber(Node):
                 self.steer = result[0][0]
                 self.throttle = result[0][1]
                 self.get_logger().info(
-                    "Turn: "+str(result[0][0])+" Throttle: "+str(result[0][1]))
-                turn = result[0][0]*-1.0
-                y = turn/(1.0/40.0)
-                y = 72+y
-                kit.servo[0].angle = int(y)
+                    "Turn: "+str(self.steer)+" Throttle: "+str(self.throttle))
+                #steer
+                if -1.0<=self.steer<=1.0:
+                    turn = self.steer*-1.0
+                    y = turn/(1.0/40.0)
+                    y = 72+y
+                    kit.servo[0].angle = int(y)
+                #throttle
+                if -1.0<=self.throttle<=1.0:
+                    the = self.throttle
+                    t = the/(1.0/6.0)
+                    if the == 0.0 or the == -0.0:
+                        kit.servo[1].angle = 90
+                    else:
+                        if the > 0:
+                            kit.servo[1].angle = 90+t
+                        else:
+                            kit.servo[1].angle = 90+t-8
                 cv2.namedWindow("camera_view")
                 image = change['new']
                 cv2.putText(img=image, text='Steer: '+str(self.steer), org=(

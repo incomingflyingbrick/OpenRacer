@@ -17,8 +17,8 @@ def data_generation():
             resized_img = img.resize((int(img.width/1),int(img.height/1)))
             batch_list.append(np.array(resized_img))
             lable = item.split('_')
-            lable_list.append([float(lable[2]),float(lable[3])])# turn and throttle
-        
+            #lable_list.append([float(lable[2]),float(lable[3])])# turn and throttle
+            lable_list.append([float(lable[2])])
         yield (np.asarray(batch_list).astype(np.float32),np.asarray(lable_list).astype(np.float32))
 
 
@@ -35,7 +35,8 @@ def data_generation_valid():
             resized_img = img.resize((int(img.width/1),int(img.height/1)))# if run into memory shortage, scale image down
             batch_list.append(np.array(resized_img))
             lable = item.split('_')
-            lable_list.append([float(lable[2]),float(lable[3])])# turn and throttle
+            #lable_list.append([float(lable[2]),float(lable[3])])# turn and throttle
+            lable_list.append([float(lable[2])])
         
         yield (np.asarray(batch_list).astype(np.float32),np.asarray(lable_list).astype(np.float32))
 
@@ -46,7 +47,7 @@ tf.keras.layers.MaxPool2D((2,2)),
 tf.keras.layers.Conv2D(20,(3,3),activation='relu'),
 tf.keras.layers.Flatten(),
 tf.keras.layers.Dense(64,activation='relu'),
-tf.keras.layers.Dense(2,activation='linear')])
-model.compile(optimizer='adam',loss='mean_squared_error',metrics=['accuracy'])
+tf.keras.layers.Dense(1,activation='tanh')])
+model.compile(optimizer='adam',loss=keras.losses.MeanAbsoluteError(),metrics=['accuracy'])
 model.fit(x=data_generation(),validation_data=data_generation_valid())
 

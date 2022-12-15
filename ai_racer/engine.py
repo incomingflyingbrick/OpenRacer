@@ -35,8 +35,8 @@ class MinimalSubscriber(Node):
         super().__init__('engine_node')
         # self._tf_publisher = StaticTransformBroadcaster(self)
         self.is_race = False
-        self.isCollecting = False
-        self.is_detection_mode = True
+        self.isCollecting = True
+        self.is_detection_mode = False
         self.is_start_race = False
         # qos_profile = QoSProfile(depth=10)
         # self.joint_pub = self.create_publisher(JointState, 'joint_states',qos_profile)
@@ -70,7 +70,7 @@ class MinimalSubscriber(Node):
             self.get_logger().info('model success load!')
         self.get_logger().info('Engine Node: init sequence end')
         self.camera = CSICamera(
-            width=328, height=246, capture_width=328, capture_height=246, capture_fps=30)
+            width=328, height=246, capture_width=328, capture_height=246, capture_fps=60)
         self.camera.running = True
         self.camera.observe(self.cameraCallback, names='value')
 
@@ -78,21 +78,21 @@ class MinimalSubscriber(Node):
         self.frame_counter+=1
         image = change['new']
         if self.isCollecting == True:
-            if self.turn_value != 0.0 or self.throttle_value != 0.0:
+            if self.throttle_value != 0.0:
+            #if self.turn_value != 0.0 or self.throttle_value != 0.0:
                 #self.get_logger().info('Image data ready to save')
-                self.saveData(self.turn_value,
-                              self.throttle_value, change['new'])
+                self.saveData(self.turn_value, change['new'])
         if self.is_detection_mode == True:
             # self.get_logger().info(str(change['new']))
             self.inference(change)
         if self.is_race == True:
-            cv2.putText(img=image, text='Steer: '+str(self.steer), org=(
-            16, 200), fontFace=cv2.FONT_HERSHEY_TRIPLEX, fontScale=0.45, color=(255, 255, 255), thickness=1)
-            cv2.putText(img=image, text='Throttle: '+str(self.throttle), org=(
-            16, 220), fontFace=cv2.FONT_HERSHEY_TRIPLEX, fontScale=0.45, color=(255, 255, 255), thickness=1)
+            # cv2.putText(img=image, text='Steer: '+str(self.steer), org=(
+            # 16, 200), fontFace=cv2.FONT_HERSHEY_TRIPLEX, fontScale=0.45, color=(255, 255, 255), thickness=1)
+            # cv2.putText(img=image, text='Throttle: '+str(self.throttle), org=(
+            # 16, 220), fontFace=cv2.FONT_HERSHEY_TRIPLEX, fontScale=0.45, color=(255, 255, 255), thickness=1)
             self.race_inference(change)
-        cv2.namedWindow("camera_view")
-        cv2.imshow('camera_view', image)
+        # cv2.namedWindow("camera_view")
+        # cv2.imshow('camera_view', image)
 
     def race_inference(self, change):
         #self.get_logger().info('race inference called')
@@ -113,23 +113,24 @@ class MinimalSubscriber(Node):
                     y = 72+y
                     kit.servo[0].angle = int(y)
                 #throttle
-                if -1.0<=self.throttle<=1.0:
-                    the = self.throttle
-                    t = the/(1.0/6.0)
-                    if the == 0.0 or the == -0.0:
-                        kit.servo[1].angle = 90
-                    else:
-                        if the > 0:
-                            kit.servo[1].angle = 90+t
-                        else:
-                            kit.servo[1].angle = 90+t-8
-                cv2.namedWindow("camera_view")
-                image = change['new']
-                cv2.putText(img=image, text='Steer: '+str(self.steer), org=(
-                    16, 200), fontFace=cv2.FONT_HERSHEY_TRIPLEX, fontScale=0.45, color=(255, 255, 255), thickness=1)
-                cv2.putText(img=image, text='Throttle: '+str(self.throttle), org=(
-                    16, 220), fontFace=cv2.FONT_HERSHEY_TRIPLEX, fontScale=0.45, color=(255, 255, 255), thickness=1)
-                cv2.imshow('camera_view', image)
+                #kit.servo[1].angle = 97
+                # if -1.0<=self.throttle<=1.0:
+                #     the = self.throttle
+                #     t = the/(1.0/6.0)
+                #     if the == 0.0 or the == -0.0:
+                #         kit.servo[1].angle = 90
+                #     else:
+                #         if the > 0:
+                #             kit.servo[1].angle = 90+t
+                #         else:
+                #             kit.servo[1].angle = 90+t-8
+                # cv2.namedWindow("camera_view")
+                # image = change['new']
+                # cv2.putText(img=image, text='Steer: '+str(self.steer), org=(
+                #     16, 200), fontFace=cv2.FONT_HERSHEY_TRIPLEX, fontScale=0.45, color=(255, 255, 255), thickness=1)
+                # cv2.putText(img=image, text='Throttle: '+str(self.throttle), org=(
+                #     16, 220), fontFace=cv2.FONT_HERSHEY_TRIPLEX, fontScale=0.45, color=(255, 255, 255), thickness=1)
+                # cv2.imshow('camera_view', image)
             except Exception as e:
                 self.get_logger().info(traceback.format_exc())
             self.frame_counter = 0
@@ -197,11 +198,10 @@ class MinimalSubscriber(Node):
             # logging.error()
         self.frame_counter = 0
 
-    def saveData(self, steering, throttle, image_data):
+    def saveData(self, steering, image_data):
         if self.isCollecting:
             file_path = 'snapshots/' + \
-                str(uuid.uuid1()) + '_'+str(round(steering, 5)) + \
-                '_'+str(round(throttle, 5)) + '_.png'
+                str(uuid.uuid1()) + '_'+str(round(steering, 7)) + '_.png'
             im = PIL.Image.fromarray(image_data)
             im.save(file_path)
             self.get_logger().info('saved data:'+file_path)
@@ -220,14 +220,14 @@ class MinimalSubscriber(Node):
         if msg.buttons[2] == 1:
             self.is_start_race = False
             self.get_logger().info('Y pressed')
-        # turn
+        #turn
         turn = msg.axes[2]*-1.0
         y = turn/(1.0/40.0)
         y = 72+y
         kit.servo[0].angle = int(y)
         # throttle
         the = msg.axes[1]
-        t = the/(1.0/9.0)
+        t = the/(1.0/6.0)
         if the == 0.0 or the == -0.0:
             kit.servo[1].angle = 90
         else:

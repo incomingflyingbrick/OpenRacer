@@ -34,6 +34,7 @@ class MinimalSubscriber(Node):
     def __init__(self):
         super().__init__('engine_node')
         # self._tf_publisher = StaticTransformBroadcaster(self)
+        self.is_free_drive = False
         self.is_race = False
         self.isCollecting = True
         self.is_detection_mode = False
@@ -70,29 +71,33 @@ class MinimalSubscriber(Node):
             self.get_logger().info('model success load!')
         self.get_logger().info('Engine Node: init sequence end')
         self.camera = CSICamera(
-            width=328, height=246, capture_width=328, capture_height=246, capture_fps=60)
+            width=328, height=246, capture_width=328, capture_height=246, capture_fps=90)
         self.camera.running = True
         self.camera.observe(self.cameraCallback, names='value')
+        self.get_logger().info('Camera init sequence end')
 
     def cameraCallback(self, change):
-        self.frame_counter+=1
-        image = change['new']
-        if self.isCollecting == True:
+        
+        if self.isCollecting:
             if self.throttle_value != 0.0:
-            #if self.turn_value != 0.0 or self.throttle_value != 0.0:
-                #self.get_logger().info('Image data ready to save')
-                self.saveData(self.turn_value, change['new'])
-        if self.is_detection_mode == True:
-            # self.get_logger().info(str(change['new']))
+                self.saveData(self.turn_value, change)
+        if self.is_detection_mode:
+            self.frame_counter+=1
             self.inference(change)
-        if self.is_race == True:
+        if self.is_race:
+            # image = change['new']
             # cv2.putText(img=image, text='Steer: '+str(self.steer), org=(
             # 16, 200), fontFace=cv2.FONT_HERSHEY_TRIPLEX, fontScale=0.45, color=(255, 255, 255), thickness=1)
             # cv2.putText(img=image, text='Throttle: '+str(self.throttle), org=(
             # 16, 220), fontFace=cv2.FONT_HERSHEY_TRIPLEX, fontScale=0.45, color=(255, 255, 255), thickness=1)
+            # cv2.namedWindow("camera_view")
+            # cv2.imshow('camera_view', image)
+            self.frame_counter+=1
             self.race_inference(change)
-        # cv2.namedWindow("camera_view")
-        # cv2.imshow('camera_view', image)
+        if self.is_free_drive:
+            cv2.namedWindow("camera_view")
+            cv2.imshow('camera_view', change['new'])
+        
 
     def race_inference(self, change):
         #self.get_logger().info('race inference called')
@@ -103,13 +108,13 @@ class MinimalSubscriber(Node):
                 result = self.race_model.predict(
                     np.asarray([change['new']]), batch_size=1)
                 self.steer = result[0][0]
-                self.throttle = result[0][1]
                 self.get_logger().info(
-                    "Turn: "+str(self.steer)+" Throttle: "+str(self.throttle))
+                    "Turn: "+str(self.steer))
+                self.get_logger().info(result)
                 #steer
                 if -1.0<=self.steer<=1.0:
                     turn = self.steer*-1.0
-                    y = turn/(1.0/40.0)
+                    y = turn/(1.0/35.0)
                     y = 72+y
                     kit.servo[0].angle = int(y)
                 #throttle
@@ -202,7 +207,7 @@ class MinimalSubscriber(Node):
         if self.isCollecting:
             file_path = 'snapshots/' + \
                 str(uuid.uuid1()) + '_'+str(round(steering, 7)) + '_.png'
-            im = PIL.Image.fromarray(image_data)
+            im = PIL.Image.fromarray(image_data['new'])
             im.save(file_path)
             self.get_logger().info('saved data:'+file_path)
 
@@ -212,29 +217,31 @@ class MinimalSubscriber(Node):
         self.turn_value = msg.axes[2]
         self.throttle_value = msg.axes[1]
 
-        if msg.buttons[0] == 1:
+        if msg.buttons[0] == 1:#button A
             self.prepareEsc()
-        if msg.buttons[3] == 1:
+        if msg.buttons[3] == 1 and self.is_race == True:
             self.is_start_race = True
             self.get_logger().info('X pressed')
-        if msg.buttons[2] == 1:
+        if msg.buttons[2] == 1 and self.is_race == True:
             self.is_start_race = False
             self.get_logger().info('Y pressed')
         #turn
-        turn = msg.axes[2]*-1.0
-        y = turn/(1.0/40.0)
-        y = 72+y
-        kit.servo[0].angle = int(y)
+        if self.isCollecting == True or self.is_free_drive == True:
+            turn = msg.axes[2]*-1.0
+            y = turn/(1.0/40.0)
+            y = 72+y
+            kit.servo[0].angle = int(y)
         # throttle
-        the = msg.axes[1]
-        t = the/(1.0/6.0)
-        if the == 0.0 or the == -0.0:
-            kit.servo[1].angle = 90
-        else:
-            if the > 0:
-                kit.servo[1].angle = 90+t
+        if self.is_free_drive == True or self.isCollecting == True or self.is_race == True:
+            the = msg.axes[1]
+            t = the/(1.0/6.5)
+            if the == 0.0 or the == -0.0:
+                kit.servo[1].angle = 90
             else:
-                kit.servo[1].angle = 90+t-8
+                if the > 0:
+                    kit.servo[1].angle = 90+t
+                else:
+                    kit.servo[1].angle = 90+t-8
 
         # controll 3D model
         # x_model = msg.axes[2]

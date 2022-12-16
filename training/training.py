@@ -4,6 +4,8 @@ import numpy as np
 from PIL import Image
 import glob
 
+print(tf.__version__)
+
 def data_generation():
     image_list = glob.glob('/home/jetson/ros2_ws/snapshots/*.png')
     size = len(image_list)
@@ -14,7 +16,7 @@ def data_generation():
         lable_list = []
         for item in batch:
             img = Image.open(item)
-            resized_img = img.resize((int(img.width/1),int(img.height/1)))
+            resized_img = img.resize((int(img.width),int(img.height)))
             batch_list.append(np.array(resized_img))
             lable = item.split('_')
             #lable_list.append([float(lable[2]),float(lable[3])])# turn and throttle
@@ -32,7 +34,7 @@ def data_generation_valid():
         lable_list = []
         for item in batch:
             img = Image.open(item)
-            resized_img = img.resize((int(img.width/1),int(img.height/1)))# if run into memory shortage, scale image down
+            resized_img = img.resize((int(img.width),int(img.height)))# if run into memory shortage, scale image down
             batch_list.append(np.array(resized_img))
             lable = item.split('_')
             #lable_list.append([float(lable[2]),float(lable[3])])# turn and throttle
@@ -41,13 +43,21 @@ def data_generation_valid():
         yield (np.asarray(batch_list).astype(np.float32),np.asarray(lable_list).astype(np.float32))
 
 
-model  = keras.Sequential([tf.keras.layers.Conv2D(20,(3,3),activation='relu'),tf.keras.layers.MaxPool2D((2,2)),
-tf.keras.layers.Conv2D(20,(3,3),activation='relu'),
-tf.keras.layers.MaxPool2D((2,2)),
-tf.keras.layers.Conv2D(20,(3,3),activation='relu'),
+model  = keras.Sequential([tf.keras.layers.Conv2D(32,(5,5),activation='relu'),tf.keras.layers.MaxPool2D(),
+tf.keras.layers.Conv2D(64,(5,5),activation='relu'),
+tf.keras.layers.MaxPool2D(),
+tf.keras.layers.Conv2D(128,(3,3),activation='relu'),
+tf.keras.layers.MaxPool2D(),
+tf.keras.layers.Conv2D(128,(3,3),activation='relu'),
+tf.keras.layers.MaxPool2D(),
 tf.keras.layers.Flatten(),
-tf.keras.layers.Dense(64,activation='relu'),
-tf.keras.layers.Dense(1,activation='tanh')])
-model.compile(optimizer='adam',loss=keras.losses.MeanAbsoluteError(),metrics=['accuracy'])
+tf.keras.layers.Dense(100,activation='relu'),
+tf.keras.layers.Dropout(0.2),
+tf.keras.layers.Dense(50,activation='relu'),
+tf.keras.layers.Dropout(0.2),
+tf.keras.layers.Dense(1,activation='linear')])
+model.compile(optimizer='adam',loss='mse',metrics=['accuracy'])
+
 model.fit(x=data_generation(),validation_data=data_generation_valid())
+model.save("/home/jetson/Downloads/model/")
 

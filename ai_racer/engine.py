@@ -35,8 +35,8 @@ class MinimalSubscriber(Node):
         super().__init__('engine_node')
         # self._tf_publisher = StaticTransformBroadcaster(self)
         self.is_free_drive = False
-        self.is_race = False
-        self.isCollecting = True
+        self.is_race = True
+        self.isCollecting = False
         self.is_detection_mode = False
         self.is_start_race = False
         # qos_profile = QoSProfile(depth=10)
@@ -71,7 +71,7 @@ class MinimalSubscriber(Node):
             self.get_logger().info('model success load!')
         self.get_logger().info('Engine Node: init sequence end')
         self.camera = CSICamera(
-            width=328, height=246, capture_width=328, capture_height=246, capture_fps=90)
+            width=328, height=246, capture_width=328, capture_height=246, capture_fps=30)
         self.camera.running = True
         self.camera.observe(self.cameraCallback, names='value')
         self.get_logger().info('Camera init sequence end')
@@ -110,7 +110,7 @@ class MinimalSubscriber(Node):
                 self.steer = result[0][0]
                 self.get_logger().info(
                     "Turn: "+str(self.steer))
-                self.get_logger().info(result)
+                #self.get_logger().info(result)
                 #steer
                 if -1.0<=self.steer<=1.0:
                     turn = self.steer*-1.0
